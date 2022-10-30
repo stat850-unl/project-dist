@@ -18,13 +18,12 @@ instead of the project proposal.
 
 ## Data Set
 
-Provide a link to your dataset here, and a description of the variables
-in the data set.
+
 **dataset link**:https://github.com/stat850-unl/project-dist/raw/master/SAP2020_merged_v1.xls
 
 ## Potential Topics to Explore Using the Data Set
 
-Describe avenues you might explore using the data
+We can explore the influence of the treatment by ploting the data. Like if lack of nitrogen will influence the dimension of the leafs for example it's length and width. Also we can check if it has the impact on plant height.
 
 ## Group Members
 
