@@ -20,6 +20,7 @@ instead of the project proposal.
 
 Provide a link to your dataset here, and a description of the variables
 in the data set.
+**dataset link**:https://github.com/stat850-unl/project-dist/raw/master/SAP2020_merged_v1.xls
 
 ## Potential Topics to Explore Using the Data Set
 
