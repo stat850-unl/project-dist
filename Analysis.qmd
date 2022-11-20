@@ -1,0 +1,14 @@
+---
+title: "Analysis"
+format: html
+editor: visual
+author: 'Yifan Wu, Hongyu Jing'
+---
+
+## Input data
+
+```{r}
+library(readxl)
+dat<- read_xls("SAP2020_merged_v1.xls")
+dat
+```
