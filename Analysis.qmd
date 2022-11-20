@@ -9,6 +9,50 @@ author: 'Yifan Wu, Hongyu Jing'
 
 ```{r}
 library(readxl)
+library(tidyverse)
 dat<- read_xls("SAP2020_merged_v1.xls")
+dat <- as.data.frame(dat)
+for (i in c(1:7)) {
+  dat[,i]=factor(dat[,i])
+}
+
 dat
 ```
+
+
+- We can visualize the potential spatial effect on plant growth, indicated by plant height or flowering time, by plotting the field row and column layout and color-coding with the phenotypes.
+```{r}
+ggplot(data=dat, aes(x=Row, y=Column, color=EstimatedPlotYield))+
+  geom_point()+
+  scale_colour_gradient2(
+    low = "blue",
+    mid = "white",
+    high = "red",
+    midpoint = 900,
+    space = "Lab",
+    na.value = "grey50",
+    guide = "colourbar",
+    aesthetics = "colour")
+
+```
+
+
+- We can investigate the relationship between plant phenotypes, for example plotting 2d histograms and scatterplots bewtween each two agronomic traits.
+
+```{r}
+panel.cor <- function(x, y, digits=2, prefix="", cex.cor){
+  usr <- par("usr"); on.exit(par(usr))
+  par(usr = c(0, 1, 0, 1))
+  r <- cor(x, y, use = "complete")
+  txt <- format(c(r, 0.123456789), digits=digits)[1]
+  txt <- paste(prefix, txt, sep="")
+  if(missing(cex.cor)) cex <- 0.8/strwidth(txt)
+  text(0.5, 0.5, txt, cex = cex * abs(r))
+}
+
+dat_num <- dat[,unlist(lapply(dat, is.numeric))]  
+yield_traits <- c("PaniclesPerPlot", "PanicleGrainWeight", "EstimatedPlotYield")
+dat_yield <- dat[,yield_traits]
+pairs(dat_yield,  upper.panel=panel.cor)
+```
+
