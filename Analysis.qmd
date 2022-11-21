@@ -19,8 +19,8 @@ for (i in c(1:7)) {
 dat
 ```
 
+-   We can visualize the potential spatial effect on plant growth, indicated by plant height or flowering time, by plotting the field row and column layout and color-coding with the phenotypes.
 
-- We can visualize the potential spatial effect on plant growth, indicated by plant height or flowering time, by plotting the field row and column layout and color-coding with the phenotypes.
 ```{r}
 ggplot(data=dat, aes(x=Row, y=Column, color=EstimatedPlotYield))+
   geom_point()+
@@ -36,8 +36,7 @@ ggplot(data=dat, aes(x=Row, y=Column, color=EstimatedPlotYield))+
 
 ```
 
-
-- We can investigate the relationship between plant phenotypes, for example plotting 2d histograms and scatterplots bewtween each two agronomic traits.
+-   We can investigate the relationship between plant phenotypes, for example plotting 2d histograms and scatterplots bewtween each two agronomic traits.
 
 ```{r}
 panel.cor <- function(x, y, digits=2, prefix="", cex.cor){
@@ -55,4 +54,3 @@ yield_traits <- c("PaniclesPerPlot", "PanicleGrainWeight", "EstimatedPlotYield")
 dat_yield <- dat[,yield_traits]
 pairs(dat_yield,  upper.panel=panel.cor)
 ```
-
