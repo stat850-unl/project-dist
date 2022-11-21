@@ -70,9 +70,13 @@ newdat<- dat[,c(-1,-3)]
 ```{r}
 summary(newdat)
 ```
+
 ## Data analysis
+
 ### 1. check the distribution for numeric output column
+
 #### 1.1 box plot for leaf dimension
+
 ```{r}
 library(ggplot2)
 library(dplyr)
@@ -100,7 +104,9 @@ ggplot(clean_le,aes(x=variable, y=value))+
   
 
 ```
-Based on the plot above, we can see that overall the dimension of the third leaf is larger than the flag leaf which is reasonable.
+
+Based on the plot above, we can see that overall the dimension of the third leaf is larger than the flag leaf which is reasonable.\
+
 #### 1.2 histogram for blooming day
 
 ```{r}
@@ -123,8 +129,11 @@ ggplot(clean_bloom,aes(x=value))+
 
 
 ```
-Based on the histogram above, we know that usually it takes around 50 to 80 days for the sorghum flower bloom.The highest probability range is around 60 to 70 days.
+
+Based on the histogram above, we know that usually it takes around 50 to 80 days for the sorghum flower bloom.The highest probability range is around 60 to 70 days.\
+
 #### 1.3 histogram for median leaf angle
+
 ```{r}
 
 analysis_angle<-melt(newdat[,c(7)])
@@ -142,8 +151,11 @@ ggplot(clean_angle,aes(x=value))+
   )
 
 ```
-Based on the histogram above, we know that usually the median value of leaf angle for each 10 individual sorghum plants is around 40 to 45 degree.
+
+Based on the histogram above, we know that usually the median value of leaf angle for each 10 individual sorghum plants is around 40 to 45 degree.\
+
 #### 1.4 histogram for panicle amount
+
 ```{r}
 
 analysis_panicle<-melt(newdat[,c(10)])
@@ -161,8 +173,11 @@ ggplot(clean_panicle,aes(x=value))+
   )
 
 ```
-Based on the histogram above, we know that usually the panicles per plot have is around 0 to 20 where the highest possibility is around 13.
-####1.5 histogram for grain weight
+
+Based on the histogram above, we know that usually the panicles per plot have is around 0 to 20 where the highest possibility is around 13.\
+
+#### 1.5 histogram for grain weight
+
 ```{r}
 
 analysis_grain<-melt(newdat[,c(11)])
@@ -180,8 +195,11 @@ ggplot(clean_grain,aes(x=value))+
   )
 
 ```
-Based on the histogram above, we know that usually the grain weight for each panicle is around 0 to 50 grams.
-####1.6 histogram for yield
+
+Based on the histogram above, we know that usually the grain weight for each panicle is around 0 to 50 grams.\
+
+#### 1.6 histogram for yield
+
 ```{r}
 
 analysis_yield<-melt(newdat[,c(12)])
@@ -200,8 +218,10 @@ ggplot(clean_yield,aes(x=value))+
 
 ```
 
-Based on the histogram above, we know that the estimated plot yield for 10 individual sorghum plants is around 0 to 1000 grams where the highest possibility range is around 300 to 500 gram.
-####1.7 histogram for plant height
+Based on the histogram above, we know that the estimated plot yield for 10 individual sorghum plants is around 0 to 1000 grams where the highest possibility range is around 300 to 500 gram.\
+
+#### 1.7 histogram for plant height
+
 ```{r}
 
 analysis_height<-melt(newdat[,c(16)])
@@ -219,9 +239,13 @@ ggplot(clean_height,aes(x=value))+
   )
 
 ```
-Based on the histogram above, we know range for plot height is around 30 to 300cm where usually the height will be around 70 cm.
-###2.Explore the effect of the nitrogen treatment for leaf dimension/plant height/yield
-####2.1 plant height
+
+Based on the histogram above, we know range for plot height is around 30 to 300cm where usually the height will be around 70 cm.\
+
+### 2.Explore the effect of the nitrogen treatment for leaf dimension/plant height/yield.
+
+#### 2.1 plant height
+
 ```{r}
 effect_height<-newdat[,c(5,16)]
 ###clean navalue
@@ -240,10 +264,11 @@ ggplot(clean_eff_height, aes(x=PlantHeight, fill=Treatment))+
     title = "plant height by group"
   )
 ```
-Based on the boxplot above, there is no significant difference effect of the treatment we can see. The histogram also support this result.
 
+Based on the boxplot above, there is no significant difference effect of the treatment we can see. The histogram also support this result.\
 
 #### 2.2 yield
+
 ```{r}
 effect_yield<-newdat[,c(5,12)]
 ###clean navalue
@@ -260,9 +285,11 @@ ggplot(clean_eff_yield, aes(x=Treatment, y=EstimatedPlotYield))+
 
 
 ```
-Based onn the boxplot above, we can see that sufficient nitrogen can increase the estimated plot yield even include the outliers.
 
-####2.3 leaf length
+Based onn the boxplot above, we can see that sufficient nitrogen can increase the estimated plot yield even include the outliers.\
+
+#### 2.3 leaf length
+
 ```{r}
 ###select required row
 leaf_length<- newdat[,c(5,13,17)]
@@ -291,9 +318,11 @@ leaf_length %>%
   )
 
 ```
-Based on the box plot above, we can only say the sufficient nitrogen may have a little influence on leaf length.
 
-####2.4 leaf width
+Based on the box plot above, we can only say the sufficient nitrogen may have a little influence on leaf length.\
+
+#### 2.4 leaf width
+
 ```{r}
 ###select required row
 leaf_width<- newdat[,c(5,14,18)]
@@ -322,17 +351,18 @@ leaf_width %>%
   )
 
 ```
-Based on the boxplot above, we can say that the sufficient nitrogen has no influence on flag leaf width and it may has negative influence on third leafwidth.
 
+Based on the boxplot above, we can say that the sufficient nitrogen has no influence on flag leaf width and it may has negative influence on third leafwidth.\
 
-###3. We can visualize the potential spatial effect on plant growth, indicated by plant height or flowering time, by plotting the field row and column layout and color-coding with the phenotypes.
+### 3. We can visualize the potential spatial effect on plant growth, indicated by plant height or flowering time, by plotting the field row and column layout and color-coding with the phenotypes.
+
 ```{r}
 dat <- as.data.frame(dat)
 for (i in c(1:7)) {
   dat[,i]=factor(dat[,i])
 }
 
-dat
+dat[1:5,]
 
 ggplot(data=dat, aes(x=Row, y=Column, color=EstimatedPlotYield))+
   geom_point()+
@@ -348,7 +378,7 @@ ggplot(data=dat, aes(x=Row, y=Column, color=EstimatedPlotYield))+
 
 ```
 
-###4. We can investigate the relationship between plant phenotypes, for example plotting 2d histograms and scatterplots bewtween each two agronomic traits.
+### 4. We can investigate the relationship between plant phenotypes, for example plotting 2d histograms and scatterplots bewtween each two agronomic traits.
 
 ```{r}
 panel.cor <- function(x, y, digits=2, prefix="", cex.cor){
