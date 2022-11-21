@@ -82,14 +82,17 @@ library(tidyr)
 ###select required column
 analysis_le<- newdat[,c(13,14,17,18)]
 ###clean navalue
-clean_le<- analysis1%>%
+clean_le<- analysis_le%>%
   melt()%>%
   ###cleaning na value
   drop_na(value)
 
 ###plot box plot
-ggplot(clean_a1,aes(x=variable, y=value))+
-  geom_boxplot()
+ggplot(clean_le,aes(x=variable, y=value))+
+  geom_boxplot()+
+  labs(
+    title = "box plot for leaf dimension"
+  )
 
 
   
@@ -111,7 +114,10 @@ clean_bloom<- analysis_bloom%>%
 
 ###plot box plot
 ggplot(clean_bloom,aes(x=value))+
-  geom_histogram(binwidth = 2)
+  geom_histogram(binwidth = 2)+
+  labs(
+    title = "histogram for bloomingday"
+  )
 
 
 ```
@@ -128,7 +134,10 @@ clean_angle<- analysis_angle%>%
 
 ###plot box plot
 ggplot(clean_angle,aes(x=value))+
-  geom_histogram(binwidth = 2)
+  geom_histogram(binwidth = 2)+
+  labs(
+    title = "histogram for median leaf angle"
+  )
 
 ```
 Based on the histogram above, we know that usually the median value of leaf angle for each 10 individual sorghum plants is around 40 to 45 degree.
@@ -144,7 +153,10 @@ clean_panicle<- analysis_panicle%>%
 
 ###plot box plot
 ggplot(clean_panicle,aes(x=value))+
-  geom_histogram(binwidth = 2)
+  geom_histogram(binwidth = 2)+
+  labs(
+    title = "histogram for panicle amount"
+  )
 
 ```
 Based on the histogram above, we know that usually the panicles per plot have is around 0 to 20 where the highest possibility is around 13.
@@ -160,7 +172,10 @@ clean_grain<- analysis_grain%>%
 
 ###plot box plot
 ggplot(clean_grain,aes(x=value))+
-  geom_histogram(binwidth = 5)
+  geom_histogram(binwidth = 5)+
+  labs(
+    title = "histogram for grain weight"
+  )
 
 ```
 Based on the histogram above, we know that usually the grain weight for each panicle is around 0 to 50 grams.
@@ -176,28 +191,15 @@ clean_yield<- analysis_yield%>%
 
 ###plot box plot
 ggplot(clean_yield,aes(x=value))+
-  geom_histogram(binwidth = 50)
+  geom_histogram(binwidth = 50)+
+  labs(
+    title = "histogram for yield"
+  )
 
 ```
 
 Based on the histogram above, we know that the estimated plot yield for 10 individual sorghum plants is around 0 to 1000 grams where the highest possibility range is around 300 to 500 gram.
 ####1.7 histogram for plant height
-```{r}
-
-analysis_grain<-melt(newdat[,c(11)])
-
-###clean navalue
-clean_grain<- analysis_grain%>%
-  ###cleaning na value
-  drop_na(value)
-
-###plot box plot
-ggplot(clean_grain,aes(x=value))+
-  geom_histogram(binwidth = 5)
-
-```
-Based on the histogram above, we know that usually the grain weight for each panicle is around 0 to 50 grams.
-####1.6 histogram for yield
 ```{r}
 
 analysis_height<-melt(newdat[,c(16)])
@@ -209,7 +211,10 @@ clean_height<- analysis_height%>%
 
 ###plot box plot
 ggplot(clean_height,aes(x=value))+
-  geom_histogram(binwidth = 10)
+  geom_histogram(binwidth = 10) +
+  labs(
+    title = "histogram for plant height"
+  )
 
 ```
 Based on the histogram above, we know range for plot height is around 30 to 300cm where usually the height will be around 70 cm.
@@ -223,20 +228,99 @@ clean_eff_height<- effect_height%>%
   drop_na(PlantHeight)
 
 ggplot(clean_eff_height, aes(x=Treatment, y=PlantHeight))+
-  geom_boxplot()
-
+  geom_boxplot() +
+  labs(
+    title = "plant height by group"
+  )
+ggplot(clean_eff_height, aes(x=PlantHeight, fill=Treatment))+
+  geom_histogram() +
+  labs(
+    title = "plant height by group"
+  )
 ```
+Based on the boxplot above, there is no significant difference effect of the treatment we can see. The histogram also support this result.
+
+
+#### 2.2 yield
 ```{r}
-effect_height<-newdat[,c(5,16)]
+effect_yield<-newdat[,c(5,12)]
 ###clean navalue
-clean_eff_height<- effect_height%>%
+clean_eff_yield<- effect_yield%>%
   ###cleaning na value
-  drop_na(PlantHeight)
+  drop_na(EstimatedPlotYield)
 
-ggplot(clean_eff_height, aes(x=Treatment, y=PlantHeight))+
-  geom_boxplot()
+ 
+ggplot(clean_eff_yield, aes(x=Treatment, y=EstimatedPlotYield))+
+  geom_boxplot() +
+  labs(
+    title = "yield by treatment"
+  )
+
 
 ```
+Based onn the boxplot above, we can see that sufficient nitrogen can increase the estimated plot yield even include the outliers.
+
+####2.3 leaf length
+```{r}
+###select required row
+leaf_length<- newdat[,c(5,13,17)]
+leaf_length %>% 
+  rename( # here we rename the columns so things look nice in the graph later
+    Flag = FlagLeafLength,
+    Third = ThirdLeafLength
+  ) %>% 
+  pivot_longer( # then we collapse the columns for each side of the brain into a single column, with a second column holding size values
+    cols = c("Flag", "Third"),
+    names_to = "Side",
+    values_to = "Size"
+  ) %>%
+  ###clean na value
+  drop_na(Size)%>% # then we plot and give it a title
+  ggplot(
+    aes(
+      x = Side,
+      y = Size,
+      fill = Treatment
+    )
+  ) + 
+  geom_boxplot() +
+  labs(
+    title = "leaf length by group"
+  )
+
+```
+Based on the box plot above, we can only say the sufficient nitrogen may have a little influence on leaf length.
+
+####2.4 leaf width
+```{r}
+###select required row
+leaf_width<- newdat[,c(5,14,18)]
+leaf_width %>% 
+  rename( # here we rename the columns so things look nice in the graph later
+    Flag = FlagLeafWidth,
+    Third = ThirdLeafWidth
+  ) %>% 
+  pivot_longer( # then we collapse the columns for each side of the brain into a single column, with a second column holding size values
+    cols = c("Flag", "Third"),
+    names_to = "Side",
+    values_to = "Size"
+  ) %>%
+  ###clean na value
+  drop_na(Size)%>% # then we plot and give it a title
+  ggplot(
+    aes(
+      x = Side,
+      y = Size,
+      fill = Treatment
+    )
+  ) + 
+  geom_boxplot() +
+  labs(
+    title = "leaf width by group"
+  )
+
+```
+Based on the boxplot above, we can say that the sufficient nitrogen has no influence on flag leaf width and it may has negative influence on third leafwidth.
 
 
 
