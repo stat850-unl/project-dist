@@ -1,6 +1,6 @@
 Stat 850 Project Description
 ================
-Yifan Wu, Hongyu Jin, …
+Yifan Wu, Hongyu Jin
 
 ## Instructions
 
