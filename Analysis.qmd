@@ -21,29 +21,26 @@ The dataset is the agronomic traits that were measured in a sorghum field experi
 
 Each row represents a small pieces of land with it's unique row number and column number which contains around 10 individual sorghum plants. The explanation for each column stated below:
 
-| Column name               | Description                                                                               | Unit |
-|-------------------------|:----------------------------|-----------------:|
-| Plot ID&Sorghum Accession | Unique ID for each plants                                                                 |   12 |
-| SNPDataID                 | Unique ID                                                                                 |  123 |
-| Row&Column                | spatial data for sorghum plants                                                           |    1 |
-| Block                     | Blocking number                                                                           |  123 |
-| Treatment                 | two levels of nitrogen treatment                                                          |    1 |
-| DaysToBloom               | How many days until the sorghum flower bloom(unit:day)                                    |  123 |
-| MedianLeafAngle           | Median value of leaf angle for each 10 individual sorghum plants(unit:degree)             |    1 |
-| LeafAngleSDV              | Standard deviation of leaf angle for 10 individual sorghum plants                         |  123 |
-| PoorStand                 | If half of the sorghum plants are poor stand, if yes then the answer is Y                 |    1 |
-| PaniclesPerPlot           | How many panicles per plot have                                                           |  123 |
-| PanicleGrainWeight        | How much grain weight for each panicle(unit:gram)                                         |    1 |
-| EstimatedPlotYield        | The estimated plot yield for 10 individual sorghum plants(unit:gram)                      |  123 |
-| FlagLeafLength            | The mean value of the flag leaf's length for each 10 individual sorghum plants(unit: cm)  |    1 |
-| FlagLeafWidth             | The mean value of the flag leaf's width for each 10 individual sorghum plants(unit: cm)   |  123 |
-| ExtantLeafNumber          | The number of visible leaves on the main stalk at maturity stage.                         |    1 |
-| PlantHeight               | The mean value of the plant height for each 10 individual sorghum plants(unit: cm)        |  123 |
-| ThirdLeafLength           | The mean value of the third leaf's length for each 10 individual sorghum plants(unit: cm) |    1 |
-| ThirdLeafWidth            | The mean value of the third leaf's width for each 10 individual sorghum plants(unit: cm)  |  123 |
-
-
-
+| Column name               | Description                                                                     |     Unit |
+|---------------------------|:--------------------------------------------------------------------------------|---------:|
+| Plot ID&Sorghum Accession | Unique ID for each plants                                                       | Constant |
+| SNPDataID                 | Unique ID                                                                       |        / |
+| Row&Column                | spatial data for sorghum plants                                                 | Constant |
+| Block                     | Blocking number                                                                 | Constant |
+| Treatment                 | two levels of nitrogen treatment                                                |        / |
+| DaysToBloom               | How many days until the sorghum flower bloom(unit:day)                          |     days |
+| MedianLeafAngle           | Median value of leaf angle for each 10 individual sorghum plants(unit:degree)   |   degree |
+| LeafAngleSDV              | Standard deviation of leaf angle for 10 individual sorghum plants               | Constant |
+| PoorStand                 | If half of the sorghum plants are poor stand, if yes then the answer is Y       |      Y/N |
+| PaniclesPerPlot           | How many panicles per plot have                                                 | Constant |
+| PanicleGrainWeight        | How much grain weight for each panicle                                          |     Gram |
+| EstimatedPlotYield        | The estimated plot yield for 10 individual sorghum plants                       |     Gram |
+| FlagLeafLength            | The mean value of the flag leaf's length for each 10 individual sorghum plants  |       cm |
+| FlagLeafWidth             | The mean value of the flag leaf's width for each 10 individual sorghum plants   |       cm |
+| ExtantLeafNumber          | The number of visible leaves on the main stalk at maturity stage.               | Constant |
+| PlantHeight               | The mean value of the plant height for each 10 individual sorghum plants        |       cm |
+| ThirdLeafLength           | The mean value of the third leaf's length for each 10 individual sorghum plants |       cm |
+| ThirdLeafWidth            | The mean value of the third leaf's width for each 10 individual sorghum plants  |       cm |
 
 ## Data cleaning
 
