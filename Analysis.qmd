@@ -22,7 +22,7 @@ The dataset is the agronomic traits that were measured in a sorghum field experi
 Each row represents a small pieces of land with it's unique row number and column number which contains around 10 individual sorghum plants. The explanation for each column stated below:
 
 | Column name               | Description                                                                     |     Unit |
-|---------------------------|:--------------------------------------------------------------------------------|---------:|
+|----------------------|:-----------------------------|-------------------:|
 | Plot ID&Sorghum Accession | Unique ID for each plants                                                       | Constant |
 | SNPDataID                 | Unique ID                                                                       |        / |
 | Row&Column                | spatial data for sorghum plants                                                 | Constant |
@@ -94,7 +94,32 @@ ggplot(clean_le,aes(x=variable, y=value))+
 
 ```
 
-Based on the plot above, we can see that overall the dimension of the third leaf is larger than the flag leaf which is reasonable.\
+The first thing we want to explore is if there exist some difference between the leaf dimension in flag leaf and third leaf. Thus, we got a boxplot for flag and third leaf.
+
+Based on the plot above, we can see that overall the dimension of the third leaf is larger than the flag leaf which is reasonable. Also, we noticed that the outliers for flag leafs are all occur in the top for both length and width, same for the third leaf which the outliers occur in the both side. Thus we thought if the leaf length has the relationship with leaf width.
+
+```{r}
+##clean NA value
+corr_ana<- na.omit(analysis_le)
+
+##plot a scatter plot first to check
+ggplot(corr_ana,aes(x=FlagLeafLength, y=FlagLeafWidth))+
+  geom_point()+
+  labs(
+    title = "Scatter plot for flag leaf dimension",
+    x='Flag leaf Length (Unit: cm)',
+    y='Flag leaf width (Unit: cm)'
+  )
+ggplot(corr_ana,aes(x=ThirdLeafLength, y=ThirdLeafWidth))+
+  geom_point()+
+  labs(
+    title = "Scatter plot for third leaf dimension",
+    x='Third leaf Length (Unit: cm)',
+    y='Third leaf width (Unit: cm)'
+  )
+```
+
+Based on the two scatter plot above, we can briefly check if there is relationship between leaf length and leaf width. For the flag leaf dimension plot, we can easily find a ellipse which shows there is positive relationship between flag leaf length and flag leaf width. For the third leaf dimension plot, the ellipse is hard to find and it more like a circle which means the relationship between third leaf length and width may not so large. Thus, further analysis needs to be done to draw a clear conclusion.
 
 #### 1.2 histogram for blooming day
 
@@ -120,6 +145,8 @@ ggplot(clean_bloom,aes(x=value))+
 
 
 ```
+
+Then, we want to check the distribution for multiple variables to have a basic understanding for each variaible. Thus, we create a histogram for each one and check it's distribution.
 
 Based on the histogram above, we know that usually it takes around 50 to 80 days for the sorghum flower bloom.The highest probability range is around 60 to 70 days.\
 
@@ -245,6 +272,8 @@ Based on the histogram above, we know range for plot height is around 30 to 300c
 
 ### 2.Explore the effect of the nitrogen treatment for leaf dimension/plant height/yield.
 
+After exploring each variable of our dataset, the next thing we want to do is to explore the effect of the nitrogen treatment in different area like leaf dimension, plant height and yield. Hopefully, we can find some difference between different treatment.
+
 #### 2.1 plant height
 
 ```{r}
@@ -257,20 +286,20 @@ clean_eff_height<- effect_height%>%
 ggplot(clean_eff_height, aes(x=Treatment, y=PlantHeight))+
   geom_boxplot() +
   labs(
-    title = "Plant height by group",
+    title = "Plant height by nitrogen level",
        y='Average plant height(Unit: cm)',
     x='Treatment variables'
   )
 ggplot(clean_eff_height, aes(x=PlantHeight, fill=Treatment))+
   geom_histogram() +
   labs(
-    title = "Plant height by group",
+    title = "Plant height by nitrogen level",
       x='Average plant height(Unit: cm)',
     y='Number of lands'
   )
 ```
 
-Based on the boxplot above, there is no significant difference effect of the treatment we can see. The histogram also support this result.\
+Based on the boxplot above, the mean value and distribution for different treatment are all the same. Thus,we can say that there is no significant difference effect of the treatment. The histogram also support this result.\
 
 #### 2.2 yield
 
@@ -293,9 +322,11 @@ ggplot(clean_eff_yield, aes(x=Treatment, y=EstimatedPlotYield))+
 
 ```
 
-Based onn the boxplot above, we can see that sufficient nitrogen can increase the estimated plot yield even include the outliers.\
+Based on the boxplot above, we can see that the mean estimated yield for sufficient nitrogen level is higher than the yield for low nitrogen level which is a interesting finding. Also, we noticed that there exists some outlier points with sufficient nitrogen treatment level. The yield for these points are more than twice larger than the upper quantile yield for the low nitrogen treatment.\
 
 #### 2.3 leaf length
+
+Then we separate the leaf's length data and width data and plot the boxplot for different leaf by different nitrogen level to see if there exist some difference between them.
 
 ```{r}
 ###select required row
@@ -321,14 +352,14 @@ leaf_length %>%
   ) + 
   geom_boxplot() +
   labs(
-    title = "Box plot for flag and third leaf length by group",
+    title = "Box plot for flag and third leaf length by nitrogen level",
       x='Leaf type',
     y='Leaf dimension(Unit: cm)'
   )
 
 ```
 
-Based on the box plot above, we can only say the sufficient nitrogen may have a little influence on leaf length.\
+Based on the box plot above, we can only say the sufficient nitrogen may have a little influence on leaf length but overall there is no difference for leaf's dimension in difference treatment since there is a large proportion of overlapping for leaf length and width between two treatment. \
 
 #### 2.4 leaf width
 
@@ -356,14 +387,14 @@ leaf_width %>%
   ) + 
   geom_boxplot() +
   labs(
- title = "Box plot for flag and third leaf width by group",
+ title = "Box plot for flag and third leaf width by nitrogen level",
       x='Leaf type',
     y='Leaf dimension(Unit: cm)'
   )
 
 ```
 
-Based on the boxplot above, we can say that the sufficient nitrogen has no influence on flag leaf width and it may has negative influence on third leafwidth.\
+Based on the boxplot above, same as the previous analysis, we can only say the sufficient nitrogen level has no influence on flag leaf width and it may has a little negative influence on third leafwidth but overall there is no influence since there is a large overlapping between the dimension in two treatments.\
 
 ### 3. We can visualize the potential spatial effect on plant growth, indicated by plant height or flowering time, by plotting the field row and column layout and color-coding with the phenotypes.
 
