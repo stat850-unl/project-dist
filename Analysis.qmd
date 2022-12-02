@@ -220,7 +220,7 @@ ggplot(clean_grain,aes(x=value))+
 
 ```
 
-Based on the histogram above, we know that usually the grain weight for each panicle is around 0 to 50 grams.\
+Based on the histogram above, we know that usually the grain weight for each panicle is around 30 to 50 grams.\
 
 #### 1.6 histogram for yield
 
@@ -359,7 +359,7 @@ leaf_length %>%
 
 ```
 
-Based on the box plot above, we can only say the sufficient nitrogen may have a little influence on leaf length but overall there is no difference for leaf's dimension in difference treatment since there is a large proportion of overlapping for leaf length and width between two treatment. \
+Based on the box plot above, we can only say the sufficient nitrogen may have a little influence on leaf length but overall there is no difference for leaf's dimension in difference treatment since there is a large proportion of overlapping for leaf length and width between two treatment.\
 
 #### 2.4 leaf width
 
@@ -486,3 +486,21 @@ shinyApp(ui, server)
 ```
 
 ## Conclusion
+
+In conclusion, when we explore each variable, we noticed that:
+
+1.  The dimension of the third leaf is larger than the flag leaf
+
+2.  There may exists positive relationship between flag leaf length and flag leaf width
+
+3.  Usually it takes around 50 to 80 days for the sorghum flower bloom.The highest probability range is around 60 to 70 days.
+
+4.  The median value of leaf angle for each 10 individual sorghum plants is around 40 to 45 degree.
+
+5.  The grain weight for panicle is around 30 to 50 grams.
+
+6.  The estimated plot yield for 10 individual sorghum plants is around 0 to 1000 grams where the highest possibility range is around 300 to 600 gram.
+
+7.  The range for plot height is around 30 to 300cm where usually the height will be around 70 cm./
+
+Then when we explore the effect of the nitrogen treatment in different area, we find out that sufficient nitrogen level has a positive influence in yield and may lead the occurrence of some extremely large yield plants. However, there is no sufficient evidence to shows that it has any relationship between plant height and leaf dimension.
