@@ -84,7 +84,9 @@ clean_le<- analysis_le%>%
 ggplot(clean_le,aes(x=variable, y=value))+
   geom_boxplot()+
   labs(
-    title = "box plot for leaf dimension"
+    title = "Box plot for flag and third leaf dimension",
+    x='Dimension variables',
+    y='Leaf dimension(Unit: cm)'
   )
 
 
@@ -111,7 +113,9 @@ clean_bloom<- analysis_bloom%>%
 ggplot(clean_bloom,aes(x=value))+
   geom_histogram(binwidth = 2)+
   labs(
-    title = "histogram for bloomingday"
+    title = "Histogram for blooming day",
+       x='Blooming time(Unit: day)',
+    y='Counts of lands'
   )
 
 
@@ -134,7 +138,9 @@ clean_angle<- analysis_angle%>%
 ggplot(clean_angle,aes(x=value))+
   geom_histogram(binwidth = 2)+
   labs(
-    title = "histogram for median leaf angle"
+    title = "Histogram for median leaf angle",
+       x='Leaf angle(Unit:degree)',
+    y='Count of lands'
   )
 
 ```
@@ -156,7 +162,9 @@ clean_panicle<- analysis_panicle%>%
 ggplot(clean_panicle,aes(x=value))+
   geom_histogram(binwidth = 2)+
   labs(
-    title = "histogram for panicle amount"
+    title = "Histogram for panicle amount",
+       x='Panicle amount',
+    y='Number of lands'
   )
 
 ```
@@ -178,7 +186,9 @@ clean_grain<- analysis_grain%>%
 ggplot(clean_grain,aes(x=value))+
   geom_histogram(binwidth = 5)+
   labs(
-    title = "histogram for grain weight"
+    title = "Histogram for grain weight",
+       x='Average grain Weight(Unit: gram)',
+    y='Number of lands'
   )
 
 ```
@@ -200,7 +210,9 @@ clean_yield<- analysis_yield%>%
 ggplot(clean_yield,aes(x=value))+
   geom_histogram(binwidth = 50)+
   labs(
-    title = "histogram for yield"
+    title = "Histogram for yield",
+       x='Yield(Unit: gram)',
+    y='Number of lands'
   )
 
 ```
@@ -222,7 +234,9 @@ clean_height<- analysis_height%>%
 ggplot(clean_height,aes(x=value))+
   geom_histogram(binwidth = 10) +
   labs(
-    title = "histogram for plant height"
+    title = "Histogram for plant height",
+       x='Average plant height(Unit: cm)',
+    y='Number of lands'
   )
 
 ```
@@ -243,12 +257,16 @@ clean_eff_height<- effect_height%>%
 ggplot(clean_eff_height, aes(x=Treatment, y=PlantHeight))+
   geom_boxplot() +
   labs(
-    title = "plant height by group"
+    title = "Plant height by group",
+       y='Average plant height(Unit: cm)',
+    x='Treatment variables'
   )
 ggplot(clean_eff_height, aes(x=PlantHeight, fill=Treatment))+
   geom_histogram() +
   labs(
-    title = "plant height by group"
+    title = "Plant height by group",
+      x='Average plant height(Unit: cm)',
+    y='Number of lands'
   )
 ```
 
@@ -267,7 +285,9 @@ clean_eff_yield<- effect_yield%>%
 ggplot(clean_eff_yield, aes(x=Treatment, y=EstimatedPlotYield))+
   geom_boxplot() +
   labs(
-    title = "yield by treatment"
+    title = "Yield by treatment",
+      x='Treatment variable',
+    y='Estimated yield(Unit: gram)'
   )
 
 
@@ -301,7 +321,9 @@ leaf_length %>%
   ) + 
   geom_boxplot() +
   labs(
-    title = "leaf length by group"
+    title = "Box plot for flag and third leaf length by group",
+      x='Leaf type',
+    y='Leaf dimension(Unit: cm)'
   )
 
 ```
@@ -334,7 +356,9 @@ leaf_width %>%
   ) + 
   geom_boxplot() +
   labs(
-    title = "leaf width by group"
+ title = "Box plot for flag and third leaf width by group",
+      x='Leaf type',
+    y='Leaf dimension(Unit: cm)'
   )
 
 ```
