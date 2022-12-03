@@ -1,0 +1,21 @@
+---
+title: "Project presentation"
+author: "Yifan Wu, Hongyu Jin"
+date: today
+institute: "University of Nebraska-Lincoln"
+theme: UNLTheme
+format: beamer
+themeoptions:
+  - left
+  - hideothersubsections
+---
+
+## Dataset description
+
+## Check for the properties in different variables 
+
+## Box plot for leaf dimension
+
+## Histogram for blooming day
+
+## Explore the effect of the nitrogen treatment
