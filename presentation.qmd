@@ -12,10 +12,344 @@ themeoptions:
 
 ## Dataset description
 
-## Check for the properties in different variables 
+```{r}
+library(readxl)
+library(tidyverse)
+dat<- read_xls("SAP2020_merged_v1.xls")
+newdat<- dat[,c(-1,-3)]
+```
 
-## Box plot for leaf dimension
+The dataset is the agronomic traits that were measured in a sorghum field experiment with two levels of nitrogen treatment and around 400 genotypes. Hopefully we will also find the sub-population information of these genotypes as an additional categorical attribute.\
 
-## Histogram for blooming day
+Each row represents a small pieces of land with it's unique row number and column number which contains around 10 individual sorghum plants. The explanation for each column stated below:
 
-## Explore the effect of the nitrogen treatment
+## List of variables
+
+**Plot ID&Sorghum Accession:** Unique ID for each plants\
+
+**SNPDataID：** Unique ID\
+
+**Row&Column:** spatial data for sorghum plants\
+
+**Block:** Blocking number\
+
+**Treatment:** two levels of nitrogen treatment\
+
+**DaysToBloom:** How many days until the sorghum flower bloom(unit:day)\
+
+**MedianLeafAngle:** Median value of leaf angle for each 10 individual sorghum plants(unit:degree)\
+
+**LeafAngleSDV:** Standard deviation of leaf angle for 10 individual sorghum plants\
+
+**PoorStand:** If half of the sorghum plants are poor stand, if yes then the answer is Y\
+
+**PaniclesPerPlot:** How many panicles per plot have\
+
+**PanicleGrainWeight:** How much grain weight for each panicle(unit:gram)\
+
+## List of variables
+
+**EstimatedPlotYield:** The estimated plot yield for 10 individual sorghum plants(unit:gram)\
+
+**FlagLeafLength:** The mean value of the flag leaf's length for each 10 individual sorghum plants(unit: cm)\
+
+**FlagLeafWidth:** The mean value of the flag leaf's width for each 10 individual sorghum plants(unit: cm)\
+
+**ExtantLeafNumber:** The number of visible leaves on the main stalk at maturity stage.\
+
+**PlantHeight:**The mean value of the plant height for each 10 individual sorghum plants(unit: cm)\
+
+**ThirdLeafLength:** The mean value of the third leaf's length for each 10 individual sorghum plants(unit: cm)\
+
+**ThirdLeafWidth:** The mean value of the third leaf's width for each 10 individual sorghum plants(unit: cm)\
+
+## Check for the properties in different variables
+
+```{r}
+library(ggplot2)
+library(dplyr)
+require(reshape2)
+library(tidyr)
+
+
+###select leaf dimention data to plot a box plot
+###select required column
+analysis_le<- newdat[,c(13,14,17,18)]
+###clean navalue
+clean_le<- analysis_le%>%
+  melt()%>%
+  ###cleaning na value
+  drop_na(value)
+
+###plot box plot
+ggplot(clean_le,aes(x=variable, y=value))+
+  geom_boxplot()+
+  labs(
+    title = "Box plot for flag and third leaf dimension",
+    x='Dimension variables',
+    y='Leaf dimension(Unit: cm)'
+  )+
+  theme(text = element_text(size = 15))
+
+
+```
+## Correlation between leaf length and width
+
+```{r}
+
+Leaf_type <- c("Third leaf" = "#619CFF", "Flag leaf" = "#F8766D")
+  ggplot(corr_ana)+
+  geom_point(aes(x=ThirdLeafLength, y=ThirdLeafWidth, colour='Third leaf'))+
+  geom_point(aes(x=FlagLeafLength, y=FlagLeafWidth, colour='Flag leaf'))+
+  labs(
+    title = "Scatter plot for flag and third leaf's dimension",
+    x='leaf Length (Unit: cm)',
+    y='leaf width (Unit: cm)'
+  )+
+    scale_color_manual(values = Leaf_type)+
+  theme(text = element_text(size = 15))
+```
+
+## Check for the properties in different variables
+```{r}
+##create some histogram for each variable to have a basic understand for each variable
+
+###blooming date
+analysis_bloom<-melt(newdat[,c(6)])
+
+###clean navalue
+clean_bloom<- analysis_bloom%>%
+  ###cleaning na value
+  drop_na(value)
+
+###plot box plot
+ggplot(clean_bloom,aes(x=value))+
+  geom_histogram(binwidth = 2)+
+  labs(
+    title = "Histogram for blooming day",
+       x='Blooming time(Unit: day)',
+    y='Counts of lands'
+  )+
+  theme(text = element_text(size = 15))
+
+
+```
+
+## Check for the properties in different variables
+```{r}
+
+analysis_angle<-melt(newdat[,c(7)])
+
+###clean navalue
+clean_angle<- analysis_angle%>%
+  ###cleaning na value
+  drop_na(value)
+
+###plot box plot
+ggplot(clean_angle,aes(x=value))+
+  geom_histogram(binwidth = 2)+
+  labs(
+    title = "Histogram for median leaf angle",
+       x='Leaf angle(Unit:degree)',
+    y='Count of lands'
+  )+
+  theme(text = element_text(size = 15))
+
+```
+
+## Check for the properties in different variables
+```{r}
+
+analysis_panicle<-melt(newdat[,c(10)])
+
+###clean navalue
+clean_panicle<- analysis_panicle%>%
+  ###cleaning na value
+  drop_na(value)
+
+###plot box plot
+ggplot(clean_panicle,aes(x=value))+
+  geom_histogram(binwidth = 2)+
+  labs(
+    title = "Histogram for panicle amount",
+       x='Panicle amount',
+    y='Number of lands'
+  )+
+  theme(text = element_text(size = 15))
+
+```
+## Check for the properties in different variables
+
+```{r}
+
+analysis_grain<-melt(newdat[,c(11)])
+
+###clean navalue
+clean_grain<- analysis_grain%>%
+  ###cleaning na value
+  drop_na(value)
+
+###plot box plot
+ggplot(clean_grain,aes(x=value))+
+  geom_histogram(binwidth = 5)+
+  labs(
+    title = "Histogram for grain weight",
+       x='Average grain Weight(Unit: gram)',
+    y='Number of lands'
+  )+
+  theme(text = element_text(size = 15))
+
+```
+
+## Check for the properties in different variables
+```{r}
+
+analysis_yield<-melt(newdat[,c(12)])
+
+###clean navalue
+clean_yield<- analysis_yield%>%
+  ###cleaning na value
+  drop_na(value)
+
+###plot box plot
+ggplot(clean_yield,aes(x=value))+
+  geom_histogram(binwidth = 50)+
+  labs(
+    title = "Histogram for yield",
+       x='Yield(Unit: gram)',
+    y='Number of lands'
+  )+
+  theme(text = element_text(size = 15))
+
+```
+## Check for the properties in different variables
+
+```{r}
+
+analysis_height<-melt(newdat[,c(16)])
+
+###clean navalue
+clean_height<- analysis_height%>%
+  ###cleaning na value
+  drop_na(value)
+
+###plot box plot
+ggplot(clean_height,aes(x=value))+
+  geom_histogram(binwidth = 10) +
+  labs(
+    title = "Histogram for plant height",
+       x='Average plant height(Unit: cm)',
+    y='Number of lands'
+  )+
+  theme(text = element_text(size = 15))
+
+```
+
+## Explore the effect of the nitrogen treatment with plant height
+
+```{r}
+effect_height<-newdat[,c(5,16)]
+###clean navalue
+clean_eff_height<- effect_height%>%
+  ###cleaning na value
+  drop_na(PlantHeight)
+
+ggplot(clean_eff_height, aes(x=Treatment, y=PlantHeight))+
+  geom_boxplot() +
+  labs(
+    title = "Plant height by nitrogen level",
+       y='Average plant height(Unit: cm)',
+    x='Treatment variables'
+  )+
+  theme(text = element_text(size = 15))
+
+```
+
+## Explore the effect of the nitrogen treatment with yield
+
+```{r}
+effect_yield<-newdat[,c(5,12)]
+###clean navalue
+clean_eff_yield<- effect_yield%>%
+  ###cleaning na value
+  drop_na(EstimatedPlotYield)
+
+ 
+ggplot(clean_eff_yield, aes(x=Treatment, y=EstimatedPlotYield))+
+  geom_boxplot() +
+  labs(
+    title = "Yield by treatment",
+      x='Treatment variable',
+    y='Estimated yield(Unit: gram)'
+  )+
+  theme(text = element_text(size = 15))
+
+
+```
+
+## Explore the effect of the nitrogen treatment with leaf length
+
+```{r}
+###select required row
+leaf_length<- newdat[,c(5,13,17)]
+leaf_length %>% 
+  rename( # here we rename the columns so things look nice in the graph later
+    Flag = FlagLeafLength,
+    Third = ThirdLeafLength
+  ) %>% 
+  pivot_longer( # then we collapse the columns for each side of the brain into a single column, with a second column holding size values
+    cols = c("Flag", "Third"),
+    names_to = "Side",
+    values_to = "Size"
+  ) %>%
+  ###clean na value
+  drop_na(Size)%>% # then we plot and give it a title
+  ggplot(
+    aes(
+      x = Side,
+      y = Size,
+      fill = Treatment
+    )
+  ) + 
+  geom_boxplot() +
+  labs(
+    title = "Box plot for flag and third leaf length by nitrogen level",
+      x='Leaf type',
+    y='Leaf dimension(Unit: cm)'
+  )+
+  theme(text = element_text(size = 15))
+
+```
+
+## Explore the effect of the nitrogen treatment with leaf width
+```{r}
+###select required row
+leaf_width<- newdat[,c(5,14,18)]
+leaf_width %>% 
+  rename( # here we rename the columns so things look nice in the graph later
+    Flag = FlagLeafWidth,
+    Third = ThirdLeafWidth
+  ) %>% 
+  pivot_longer( # then we collapse the columns for each side of the brain into a single column, with a second column holding size values
+    cols = c("Flag", "Third"),
+    names_to = "Side",
+    values_to = "Size"
+  ) %>%
+  ###clean na value
+  drop_na(Size)%>% # then we plot and give it a title
+  ggplot(
+    aes(
+      x = Side,
+      y = Size,
+      fill = Treatment
+    )
+  ) + 
+  geom_boxplot() +
+  labs(
+ title = "Box plot for flag and third leaf width by nitrogen level",
+      x='Leaf type',
+    y='Leaf dimension(Unit: cm)'
+  )+
+  theme(text = element_text(size = 15))
+
+```

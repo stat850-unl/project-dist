@@ -22,7 +22,7 @@ The dataset is the agronomic traits that were measured in a sorghum field experi
 Each row represents a small pieces of land with it's unique row number and column number which contains around 10 individual sorghum plants. The explanation for each column stated below:
 
 | Column name               | Description                                                                     |     Unit |
-|---------------------------|:--------------------------------------------------------------------------------|---------:|
+|----------------|:---------------------------------------|---------------:|
 | Plot ID&Sorghum Accession | Unique ID for each plants                                                       | Constant |
 | SNPDataID                 | Unique ID                                                                       |        / |
 | Row&Column                | spatial data for sorghum plants                                                 | Constant |
@@ -87,7 +87,7 @@ ggplot(clean_le,aes(x=variable, y=value))+
     title = "Box plot for flag and third leaf dimension",
     x='Dimension variables',
     y='Leaf dimension(Unit: cm)'
-  )
+  ) 
 
 
   
@@ -117,6 +117,23 @@ ggplot(corr_ana,aes(x=ThirdLeafLength, y=ThirdLeafWidth))+
     x='Third leaf Length (Unit: cm)',
     y='Third leaf width (Unit: cm)'
   )
+  geom_point()+
+  labs(
+    title = "Scatter plot for flag leaf dimension",
+    x='Flag leaf Length (Unit: cm)',
+    y='Flag leaf width (Unit: cm)'
+  )
+ ###combine these two plot together
+Leaf_type <- c("Third leaf" = "#619CFF", "Flag leaf" = "#F8766D")
+  ggplot(corr_ana)+
+  geom_point(aes(x=ThirdLeafLength, y=ThirdLeafWidth, colour='Third leaf'))+
+  geom_point(aes(x=FlagLeafLength, y=FlagLeafWidth, colour='Flag leaf'))+
+  labs(
+    title = "Scatter plot for flag and third leaf's dimension",
+    x='leaf Length (Unit: cm)',
+    y='leaf width (Unit: cm)'
+  )+
+     scale_color_manual(values = Leaf_type)
 ```
 
 Based on the two scatter plot above, we can briefly check if there is relationship between leaf length and leaf width. For the flag leaf dimension plot, we can easily find a ellipse which shows there is positive relationship between flag leaf length and flag leaf width. For the third leaf dimension plot, the ellipse is hard to find and it more like a circle which means the relationship between third leaf length and width may not so large. Thus, further analysis needs to be done to draw a clear conclusion.
