@@ -5,6 +5,7 @@ date: today
 institute: "University of Nebraska-Lincoln"
 theme: UNLTheme
 format: beamer
+runtime: shiny
 themeoptions:
   - left
   - hideothersubsections
@@ -93,12 +94,14 @@ ggplot(clean_le,aes(x=variable, y=value))+
 
 
 ```
+
 ## Correlation between leaf length and width
 
 ```{r}
 
 Leaf_type <- c("Third leaf" = "#619CFF", "Flag leaf" = "#F8766D")
-  ggplot(corr_ana)+
+
+ggplot(na.omit(analysis_le))+
   geom_point(aes(x=ThirdLeafLength, y=ThirdLeafWidth, colour='Third leaf'))+
   geom_point(aes(x=FlagLeafLength, y=FlagLeafWidth, colour='Flag leaf'))+
   labs(
@@ -111,6 +114,7 @@ Leaf_type <- c("Third leaf" = "#619CFF", "Flag leaf" = "#F8766D")
 ```
 
 ## Check for the properties in different variables
+
 ```{r}
 ##create some histogram for each variable to have a basic understand for each variable
 
@@ -136,6 +140,7 @@ ggplot(clean_bloom,aes(x=value))+
 ```
 
 ## Check for the properties in different variables
+
 ```{r}
 
 analysis_angle<-melt(newdat[,c(7)])
@@ -158,6 +163,7 @@ ggplot(clean_angle,aes(x=value))+
 ```
 
 ## Check for the properties in different variables
+
 ```{r}
 
 analysis_panicle<-melt(newdat[,c(10)])
@@ -178,6 +184,7 @@ ggplot(clean_panicle,aes(x=value))+
   theme(text = element_text(size = 15))
 
 ```
+
 ## Check for the properties in different variables
 
 ```{r}
@@ -202,6 +209,7 @@ ggplot(clean_grain,aes(x=value))+
 ```
 
 ## Check for the properties in different variables
+
 ```{r}
 
 analysis_yield<-melt(newdat[,c(12)])
@@ -222,6 +230,7 @@ ggplot(clean_yield,aes(x=value))+
   theme(text = element_text(size = 15))
 
 ```
+
 ## Check for the properties in different variables
 
 ```{r}
@@ -322,6 +331,7 @@ leaf_length %>%
 ```
 
 ## Explore the effect of the nitrogen treatment with leaf width
+
 ```{r}
 ###select required row
 leaf_width<- newdat[,c(5,14,18)]
@@ -352,4 +362,51 @@ leaf_width %>%
   )+
   theme(text = element_text(size = 15))
 
+```
+
+
+```{r}
+library(shiny)
+require(ggplot2)
+require(dplyr)
+require(ggpubr)
+library(tidyverse)
+library(ggpubr)
+
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+  # Application title
+  titlePanel("The relationship between phenotypes and final yield"),
+  
+  # Sidebar with a slider input for the number of bins
+  sidebarPanel(
+    selectInput("phenotype",
+                "Choose a phenotypic trait to investigate",
+                list(`Growth` = list("DaysToBloom", "MedianLeafAngle", "FlagLeafLength", "FlagLeafWidth", 
+                                     "ExtantLeafNumber","PlantHeight", "ThirdLeafLength", "ThirdLeafWidth"),
+                     `Reproductive` = list("PaniclesPerPlot", "PanicleGrainWeight"))
+    )
+  ),
+  
+  # Show a plot of the generated distribution
+  mainPanel(
+    plotOutput("Scatterplot")
+  )
+)
+
+# Define server logic required to draw a histogram
+server <- function(input, output) {
+  output$Scatterplot <- renderPlot({
+    dat_scatter <- dat[,c(input$phenotype, "EstimatedPlotYield")]
+    gg <- data.frame(Yield=dat$EstimatedPlotYield, Phenotype=dat[,input$phenotype]) %>%
+      ggplot(aes(x = Phenotype, y=Yield)) + geom_point() +
+      stat_smooth(method = "lm")+
+      stat_regline_equation(aes(label =  paste(..rr.label.., sep = "~~~~")))+
+      xlab(input$phenotype)+ylab("Yield (g)")
+    print(gg)
+  })
+}
+
+# Bind ui and server together
+shinyApp(ui, server)
 ```

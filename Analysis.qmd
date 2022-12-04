@@ -22,7 +22,7 @@ The dataset is the agronomic traits that were measured in a sorghum field experi
 Each row represents a small pieces of land with it's unique row number and column number which contains around 10 individual sorghum plants. The explanation for each column stated below:
 
 | Column name               | Description                                                                     |     Unit |
-|----------------|:---------------------------------------|---------------:|
+|-----------------|:-------------------------------------|----------------:|
 | Plot ID&Sorghum Accession | Unique ID for each plants                                                       | Constant |
 | SNPDataID                 | Unique ID                                                                       |        / |
 | Row&Column                | spatial data for sorghum plants                                                 | Constant |
@@ -117,12 +117,7 @@ ggplot(corr_ana,aes(x=ThirdLeafLength, y=ThirdLeafWidth))+
     x='Third leaf Length (Unit: cm)',
     y='Third leaf width (Unit: cm)'
   )
-  geom_point()+
-  labs(
-    title = "Scatter plot for flag leaf dimension",
-    x='Flag leaf Length (Unit: cm)',
-    y='Flag leaf width (Unit: cm)'
-  )
+  
  ###combine these two plot together
 Leaf_type <- c("Third leaf" = "#619CFF", "Flag leaf" = "#F8766D")
   ggplot(corr_ana)+
@@ -308,7 +303,7 @@ ggplot(clean_eff_height, aes(x=Treatment, y=PlantHeight))+
     x='Treatment variables'
   )
 ggplot(clean_eff_height, aes(x=PlantHeight, fill=Treatment))+
-  geom_histogram() +
+  geom_histogram(alpha=0.5) +
   labs(
     title = "Plant height by nitrogen level",
       x='Average plant height(Unit: cm)',
