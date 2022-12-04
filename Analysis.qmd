@@ -411,14 +411,14 @@ Based on the boxplot above, same as the previous analysis, we can only say the s
 ### 3. We can visualize the potential spatial effect on plant growth, indicated by plant height or flowering time, by plotting the field row and column layout and color-coding with the phenotypes.
 
 ```{r}
-dat <- as.data.frame(dat)
-for (i in c(1:7)) {
-  dat[,i]=factor(dat[,i])
+dat_testsp <- as.data.frame(dat)
+for (i in c(1,2,3,6,7)) {
+  dat_testsp[,i]=factor(dat_testsp[,i])
 }
 
-dat[1:5,]
+#dat_testsp[1:5,]
 
-ggplot(data=dat, aes(x=Row, y=Column, color=EstimatedPlotYield))+
+ggplot(data=dat_testsp, aes(x=Row, y=Column, color=EstimatedPlotYield))+
   geom_point()+
   scale_colour_gradient2(
     low = "blue",
@@ -428,11 +428,15 @@ ggplot(data=dat, aes(x=Row, y=Column, color=EstimatedPlotYield))+
     space = "Lab",
     na.value = "grey50",
     guide = "colourbar",
-    aesthetics = "colour")
+    aesthetics = "colour")+
+  scale_x_continuous(breaks=c(0,20,40,60))+
+  scale_y_continuous(breaks=c(0,5,10,15,20,25,30))
 
 ```
 
-### 4. We can investigate the relationship between plant phenotypes, for example plotting 2d histograms and scatterplots bewtween each two agronomic traits.
+
+
+### 4. We can investigate the relationship between plant phenotypes, for example plotting scatterplots and regression lines bewtween each two agronomic traits.
 
 ```{r}
 panel.cor <- function(x, y, digits=2, prefix="", cex.cor){

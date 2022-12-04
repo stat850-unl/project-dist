@@ -106,8 +106,8 @@ ggplot(na.omit(analysis_le))+
   geom_point(aes(x=FlagLeafLength, y=FlagLeafWidth, colour='Flag leaf'))+
   labs(
     title = "Scatter plot for flag and third leaf's dimension",
-    x='leaf Length (Unit: cm)',
-    y='leaf width (Unit: cm)'
+    x='Leaf Length (Unit: cm)',
+    y='Leaf width (Unit: cm)'
   )+
     scale_color_manual(values = Leaf_type)+
   theme(text = element_text(size = 15))
@@ -364,6 +364,10 @@ leaf_width %>%
 
 ```
 
+
+
+
+## Create a shiny app to show the correlation between different traits and yield.
 
 ```{r}
 library(shiny)
