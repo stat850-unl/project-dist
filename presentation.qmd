@@ -10,6 +10,9 @@ themeoptions:
   - hideothersubsections
 ---
 
+## Sorghum
+![Soegum pictusorghum.jpeg){width=85%}
+
 ## Dataset description
 
 ```{r}
