@@ -82,16 +82,19 @@ analysis_le<- newdat[,c(13,14,17,18)]
 clean_le<- analysis_le%>%
   melt()%>%
   ###cleaning na value
-  drop_na(value)
+  drop_na(value)%>%
+  mutate(dimension=sub(".*f", "",variable), leaf=sub("Leaf.*","",variable))
+  
 
 ###plot box plot
-ggplot(clean_le,aes(x=variable, y=value))+
+ggplot(clean_le,aes(x=leaf, y=value))+
   geom_boxplot()+
   labs(
     title = "Box plot for flag and third leaf dimension",
     x='Dimension variables',
     y='Leaf dimension(Unit: cm)'
-  )+
+  ) +
+  facet_wrap(~dimension, scales = "free")+
   theme(text = element_text(size = 15))
 
 
@@ -367,6 +370,49 @@ leaf_width %>%
 ```
 
 
+## Potential yield pattern as subject to the field layout
+
+```{r}
+dat_testsp <- as.data.frame(dat)
+for (i in c(1,2,3,6,7)) {
+  dat_testsp[,i]=factor(dat_testsp[,i])
+}
+
+#dat_testsp[1:5,]
+
+ggplot(data=dat_testsp, aes(x=Row, y=Column, color=EstimatedPlotYield))+
+  geom_point()+
+  scale_colour_gradient2(
+    low = "blue",
+    mid = "white",
+    high = "red",
+    midpoint = 900,
+    space = "Lab",
+    na.value = "grey50",
+    guide = "colourbar",
+    aesthetics = "colour")+
+  scale_x_continuous(breaks=c(0,20,40,60))+
+  scale_y_continuous(breaks=c(0,5,10,15,20,25,30))
+
+```
 
 
+## Correlation between other traits and yield.
+
+```{r}
+panel.cor <- function(x, y, digits=2, prefix="", cex.cor){
+  usr <- par("usr"); on.exit(par(usr))
+  par(usr = c(0, 1, 0, 1))
+  r <- cor(x, y, use = "complete")
+  txt <- format(c(r, 0.123456789), digits=digits)[1]
+  txt <- paste(prefix, txt, sep="")
+  if(missing(cex.cor)) cex <- 0.8/strwidth(txt)
+  text(0.5, 0.5, txt, cex = cex * abs(r))
+}
+
+dat_num <- dat[,unlist(lapply(dat, is.numeric))]  
+yield_traits <- c("PaniclesPerPlot", "PanicleGrainWeight", "EstimatedPlotYield")
+dat_yield <- dat[,yield_traits]
+pairs(dat_yield,  upper.panel=panel.cor)
+```
 

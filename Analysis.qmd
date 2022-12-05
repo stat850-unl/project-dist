@@ -22,7 +22,7 @@ The dataset is the agronomic traits that were measured in a sorghum field experi
 Each row represents a small pieces of land with it's unique row number and column number which contains around 10 individual sorghum plants. The explanation for each column stated below:
 
 | Column name               | Description                                                                     |     Unit |
-|-----------------|:-------------------------------------|----------------:|
+|------------------|:------------------------------------|-----------------:|
 | Plot ID&Sorghum Accession | Unique ID for each plants                                                       | Constant |
 | SNPDataID                 | Unique ID                                                                       |        / |
 | Row&Column                | spatial data for sorghum plants                                                 | Constant |
@@ -78,18 +78,19 @@ analysis_le<- newdat[,c(13,14,17,18)]
 clean_le<- analysis_le%>%
   melt()%>%
   ###cleaning na value
-  drop_na(value)
+  drop_na(value)%>%
+  mutate(dimension=sub(".*f", "",variable), leaf=sub("Leaf.*","",variable))
+  
 
 ###plot box plot
-ggplot(clean_le,aes(x=variable, y=value))+
+ggplot(clean_le,aes(x=leaf, y=value))+
   geom_boxplot()+
   labs(
     title = "Box plot for flag and third leaf dimension",
     x='Dimension variables',
     y='Leaf dimension(Unit: cm)'
-  ) 
-
-
+  ) +
+  facet_wrap(~dimension, scales = "free")
   
 
 ```
@@ -433,8 +434,6 @@ ggplot(data=dat_testsp, aes(x=Row, y=Column, color=EstimatedPlotYield))+
   scale_y_continuous(breaks=c(0,5,10,15,20,25,30))
 
 ```
-
-
 
 ### 4. We can investigate the relationship between plant phenotypes, for example plotting scatterplots and regression lines bewtween each two agronomic traits.
 
