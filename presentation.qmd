@@ -1,5 +1,5 @@
 ---
-title: "Project presentation"
+title: "Understanding Sorghum Morphological Trairts in a Diverse Population"
 author: "Yifan Wu, Hongyu Jin"
 date: today
 institute: "University of Nebraska-Lincoln"
@@ -11,7 +11,7 @@ themeoptions:
 ---
 
 ## Sorghum
-![Soegum pictusorghum.jpeg){width=85%}
+![Sorghum picture](sorghum.jpeg){width=85%}
 
 ## Dataset description
 
@@ -415,4 +415,7 @@ yield_traits <- c("PaniclesPerPlot", "PanicleGrainWeight", "EstimatedPlotYield")
 dat_yield <- dat[,yield_traits]
 pairs(dat_yield,  upper.panel=panel.cor)
 ```
+
+## Thank you!
+![Sorghum picture](sorghum2.jpeg){width=85%}
 

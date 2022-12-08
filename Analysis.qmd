@@ -17,12 +17,12 @@ dat<- read_xls("SAP2020_merged_v1.xls")
 dat[1:5,]
 ```
 
-The dataset is the agronomic traits that were measured in a sorghum field experiment with two levels of nitrogen treatment and around 400 genotypes. Hopefully we will also find the sub-population information of these genotypes as an additional categorical attribute.\
+The dataset is the agronomic traits that were measured in a sorghum field experiment with two levels of nitrogen treatment.\
 
 Each row represents a small pieces of land with it's unique row number and column number which contains around 10 individual sorghum plants. The explanation for each column stated below:
 
 | Column name               | Description                                                                     |     Unit |
-|------------------|:------------------------------------|-----------------:|
+|------------------|:-----------------------------------|-----------------:|
 | Plot ID&Sorghum Accession | Unique ID for each plants                                                       | Constant |
 | SNPDataID                 | Unique ID                                                                       |        / |
 | Row&Column                | spatial data for sorghum plants                                                 | Constant |
@@ -462,6 +462,7 @@ require(ggpubr)
 library(tidyverse)
 library(ggpubr)
 
+dat<-as.data.frame(dat)
 # Define UI for application that draws a histogram
 ui <- fluidPage(
   # Application title
@@ -486,7 +487,7 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
   output$Scatterplot <- renderPlot({
-    dat_scatter <- dat[,c(input$phenotype, "EstimatedPlotYield")]
+    #dat_scatter <- dat[,c(input$phenotype, "EstimatedPlotYield")]
     gg <- data.frame(Yield=dat$EstimatedPlotYield, Phenotype=dat[,input$phenotype]) %>%
       ggplot(aes(x = Phenotype, y=Yield)) + geom_point() +
       stat_smooth(method = "lm")+

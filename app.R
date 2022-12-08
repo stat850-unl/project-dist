@@ -4,7 +4,11 @@ require(dplyr)
 require(ggpubr)
 library(tidyverse)
 library(ggpubr)
+library(tidyverse)
+dat<- read_xls("SAP2020_merged_v1.xls")
 
+dat[1:5,]
+dat <- as.data.frame(dat)
 # Define UI for application that draws a histogram
 ui <- fluidPage(
   # Application title
