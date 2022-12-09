@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.0.38">
+<meta name="generator" content="quarto-1.0.36">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -131,10 +131,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-✔ ggplot2 3.3.6     ✔ purrr   0.3.5
-✔ tibble  3.1.8     ✔ dplyr   1.0.9
-✔ tidyr   1.2.1     ✔ stringr 1.4.1
-✔ readr   2.1.2     ✔ forcats 0.5.1
+✔ ggplot2 3.3.6      ✔ purrr   0.3.5 
+✔ tibble  3.1.8      ✔ dplyr   1.0.10
+✔ tidyr   1.2.1      ✔ stringr 1.4.1 
+✔ readr   2.1.3      ✔ forcats 0.5.2 
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks stats::filter()
 ✖ dplyr::lag()    masks stats::lag()</code></pre>
@@ -159,19 +159,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 #   ⁶​LeafAngleSDV</code></pre>
 </div>
 </div>
-<p>The dataset is the agronomic traits that were measured in a sorghum field experiment with two levels of nitrogen treatment and around 400 genotypes. Hopefully we will also find the sub-population information of these genotypes as an additional categorical attribute.<br>
+<p>The dataset is the agronomic traits that were measured in a sorghum field experiment with around 400 varieties and two levels of nitrogen treatment. The field design was RCBD. Each treatment variety combination was replicated twice.<br>
 </p>
-<p>Each row represents a small pieces of land with it’s unique row number and column number which contains around 10 individual sorghum plants. The explanation for each column stated below:</p>
+<p>Each plot was a one row plot representing a small pieces of land with its unique row number and column number which contains around 10 individual sorghum plants. The explanation for each column stated below:</p>
 <table class="table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 50%">
-<col style="width: 25%">
+<col style="width: 27%">
+<col style="width: 35%">
+<col style="width: 23%">
+<col style="width: 13%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Column name</th>
 <th style="text-align: left;">Description</th>
+<th>Data type</th>
 <th style="text-align: right;">Unit</th>
 </tr>
 </thead>
@@ -179,91 +181,109 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tr class="odd">
 <td>Plot ID&amp;Sorghum Accession</td>
 <td style="text-align: left;">Unique ID for each plants</td>
+<td>Character</td>
 <td style="text-align: right;">Constant</td>
 </tr>
 <tr class="even">
 <td>SNPDataID</td>
 <td style="text-align: left;">Unique ID</td>
+<td>Numeric (factor)</td>
 <td style="text-align: right;">/</td>
 </tr>
 <tr class="odd">
 <td>Row&amp;Column</td>
-<td style="text-align: left;">spatial data for sorghum plants</td>
+<td style="text-align: left;">Spatial location of sorghum plants</td>
+<td>Numeric</td>
 <td style="text-align: right;">Constant</td>
 </tr>
 <tr class="even">
 <td>Block</td>
 <td style="text-align: left;">Blocking number</td>
+<td>Numeric (factor)</td>
 <td style="text-align: right;">Constant</td>
 </tr>
 <tr class="odd">
 <td>Treatment</td>
-<td style="text-align: left;">two levels of nitrogen treatment</td>
+<td style="text-align: left;">2 levels of nitrogen treatment</td>
+<td>Character (binary)</td>
 <td style="text-align: right;">/</td>
 </tr>
 <tr class="even">
 <td>DaysToBloom</td>
 <td style="text-align: left;">How many days until the sorghum flower bloom(unit:day)</td>
+<td>Numeric</td>
 <td style="text-align: right;">days</td>
 </tr>
 <tr class="odd">
 <td>MedianLeafAngle</td>
 <td style="text-align: left;">Median value of leaf angle for each 10 individual sorghum plants(unit:degree)</td>
+<td>Numeric</td>
 <td style="text-align: right;">degree</td>
 </tr>
 <tr class="even">
 <td>LeafAngleSDV</td>
 <td style="text-align: left;">Standard deviation of leaf angle for 10 individual sorghum plants</td>
+<td>Numeric</td>
 <td style="text-align: right;">Constant</td>
 </tr>
 <tr class="odd">
 <td>PoorStand</td>
 <td style="text-align: left;">If half of the sorghum plants are poor stand, if yes then the answer is Y</td>
+<td>Character (binary)</td>
 <td style="text-align: right;">Y/N</td>
 </tr>
 <tr class="even">
 <td>PaniclesPerPlot</td>
 <td style="text-align: left;">How many panicles per plot have</td>
+<td>Numeric</td>
 <td style="text-align: right;">Constant</td>
 </tr>
 <tr class="odd">
 <td>PanicleGrainWeight</td>
 <td style="text-align: left;">How much grain weight for each panicle</td>
+<td>Numeric</td>
 <td style="text-align: right;">Gram</td>
 </tr>
 <tr class="even">
 <td>EstimatedPlotYield</td>
 <td style="text-align: left;">The estimated plot yield for 10 individual sorghum plants</td>
+<td>Numeric</td>
 <td style="text-align: right;">Gram</td>
 </tr>
 <tr class="odd">
 <td>FlagLeafLength</td>
 <td style="text-align: left;">The mean value of the flag leaf’s length for each 10 individual sorghum plants</td>
+<td>Numeric</td>
 <td style="text-align: right;">cm</td>
 </tr>
 <tr class="even">
 <td>FlagLeafWidth</td>
 <td style="text-align: left;">The mean value of the flag leaf’s width for each 10 individual sorghum plants</td>
+<td>Numeric</td>
 <td style="text-align: right;">cm</td>
 </tr>
 <tr class="odd">
 <td>ExtantLeafNumber</td>
 <td style="text-align: left;">The number of visible leaves on the main stalk at maturity stage.</td>
+<td>Numeric</td>
 <td style="text-align: right;">Constant</td>
 </tr>
 <tr class="even">
 <td>PlantHeight</td>
 <td style="text-align: left;">The mean value of the plant height for each 10 individual sorghum plants</td>
+<td>Numeric</td>
 <td style="text-align: right;">cm</td>
 </tr>
 <tr class="odd">
 <td>ThirdLeafLength</td>
 <td style="text-align: left;">The mean value of the third leaf’s length for each 10 individual sorghum plants</td>
+<td>Numeric</td>
 <td style="text-align: right;">cm</td>
 </tr>
 <tr class="even">
 <td>ThirdLeafWidth</td>
 <td style="text-align: left;">The mean value of the third leaf’s width for each 10 individual sorghum plants</td>
+<td>Numeric</td>
 <td style="text-align: right;">cm</td>
 </tr>
 </tbody>
@@ -271,6 +291,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="data-cleaning" class="level2">
 <h2 class="anchored" data-anchor-id="data-cleaning">Data cleaning</h2>
+<p>The first three columns contain same information, so we only retain the second column, which is more widely used by other literature.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">##delete the useless column</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -329,10 +350,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="data-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="data-analysis">Data analysis</h2>
-<section id="check-the-distribution-for-numeric-output-column" class="level3">
-<h3 class="anchored" data-anchor-id="check-the-distribution-for-numeric-output-column">1. check the distribution for numeric output column</h3>
-<section id="box-plot-for-leaf-dimension" class="level4">
-<h4 class="anchored" data-anchor-id="box-plot-for-leaf-dimension">1.1 box plot for leaf dimension</h4>
+<p>The analysis started from checking the distribution for each numeric traits. Then we discovered some correlations between the traits. Finally, we took the nitrogen treatments into consideration to investigate the treatment effect on the sorghum plants.</p>
+<section id="check-the-distribution-for-numeric-columns" class="level3">
+<h3 class="anchored" data-anchor-id="check-the-distribution-for-numeric-columns">1. Check the distribution for numeric columns</h3>
+<section id="box-plot-for-leaf-dimensions" class="level4">
+<h4 class="anchored" data-anchor-id="box-plot-for-leaf-dimensions">1.1 Box plot for leaf dimensions</h4>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
@@ -377,8 +399,8 @@ Attaching package: 'reshape2'</code></pre>
 <p><img src="Analysis_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>The first thing we want to explore is if there exist some difference between the leaf dimension in flag leaf and third leaf. Thus, we got a boxplot for flag and third leaf.</p>
-<p>Based on the plot above, we can see that overall the dimension of the third leaf is larger than the flag leaf which is reasonable. Also, we noticed that the outliers for flag leafs are all occur in the top for both length and width, same for the third leaf which the outliers occur in the both side. Thus we thought if the leaf length has the relationship with leaf width.</p>
+<p>The first thing we want to explore is if there exists some difference between the leaf dimension in the flag (top) leaf and the third leaf. Thus, we got a boxplot for flag and third leaf.</p>
+<p>Based on the plot above, we can see that overall the dimension of the third leaf is larger than the flag leaf, which is reasonable. It can be seen that the outliers for flag leafs all occur in the top for both length and width. Same trend is observed for the third leaf which the outliers occur in the both side. Thus, it is worth investigating if the leaf length has any relationship with the leaf width.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="do">##clean NA value</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>corr_ana<span class="ot">&lt;-</span> <span class="fu">na.omit</span>(analysis_le)</span>
@@ -419,10 +441,10 @@ Attaching package: 'reshape2'</code></pre>
 <p><img src="Analysis_files/figure-html/unnamed-chunk-5-3.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Based on the two scatter plot above, we can briefly check if there is relationship between leaf length and leaf width. For the flag leaf dimension plot, we can easily find a ellipse which shows there is positive relationship between flag leaf length and flag leaf width. For the third leaf dimension plot, the ellipse is hard to find and it more like a circle which means the relationship between third leaf length and width may not so large. Thus, further analysis needs to be done to draw a clear conclusion.</p>
+<p>Based on the two scatter plot above, we can briefly check if there is relationship between leaf length and leaf width. For the flag leaf dimension plot, we can easily find a ellipse which shows there is positive relationship between flag leaf length and flag leaf width. For the third leaf dimension plot, the ellipse is hard to find and the distribution of the data points is more like a circle shape, which means the relationship between third leaf length and width may be weak. Thus, further analysis needs to be done to draw a clear conclusion.</p>
 </section>
 <section id="histogram-for-blooming-day" class="level4">
-<h4 class="anchored" data-anchor-id="histogram-for-blooming-day">1.2 histogram for blooming day</h4>
+<h4 class="anchored" data-anchor-id="histogram-for-blooming-day">1.2 Histogram for blooming day</h4>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="do">##create some histogram for each variable to have a basic understand for each variable</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -453,7 +475,7 @@ Attaching package: 'reshape2'</code></pre>
 </p>
 </section>
 <section id="histogram-for-median-leaf-angle" class="level4">
-<h4 class="anchored" data-anchor-id="histogram-for-median-leaf-angle">1.3 histogram for median leaf angle</h4>
+<h4 class="anchored" data-anchor-id="histogram-for-median-leaf-angle">1.3 Histogram for median leaf angle</h4>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>analysis_angle<span class="ot">&lt;-</span><span class="fu">melt</span>(newdat[,<span class="fu">c</span>(<span class="dv">7</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -480,7 +502,7 @@ Attaching package: 'reshape2'</code></pre>
 </p>
 </section>
 <section id="histogram-for-panicle-amount" class="level4">
-<h4 class="anchored" data-anchor-id="histogram-for-panicle-amount">1.4 histogram for panicle amount</h4>
+<h4 class="anchored" data-anchor-id="histogram-for-panicle-amount">1.4 Histogram for panicle amount</h4>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>analysis_panicle<span class="ot">&lt;-</span><span class="fu">melt</span>(newdat[,<span class="fu">c</span>(<span class="dv">10</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -507,7 +529,7 @@ Attaching package: 'reshape2'</code></pre>
 </p>
 </section>
 <section id="histogram-for-grain-weight" class="level4">
-<h4 class="anchored" data-anchor-id="histogram-for-grain-weight">1.5 histogram for grain weight</h4>
+<h4 class="anchored" data-anchor-id="histogram-for-grain-weight">1.5 Histogram for grain weight</h4>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>analysis_grain<span class="ot">&lt;-</span><span class="fu">melt</span>(newdat[,<span class="fu">c</span>(<span class="dv">11</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -533,8 +555,8 @@ Attaching package: 'reshape2'</code></pre>
 <p>Based on the histogram above, we know that usually the grain weight for each panicle is around 30 to 50 grams.<br>
 </p>
 </section>
-<section id="histogram-for-yield" class="level4">
-<h4 class="anchored" data-anchor-id="histogram-for-yield">1.6 histogram for yield</h4>
+<section id="histogram-of-the-yield" class="level4">
+<h4 class="anchored" data-anchor-id="histogram-of-the-yield">1.6 Histogram of the yield</h4>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>analysis_yield<span class="ot">&lt;-</span><span class="fu">melt</span>(newdat[,<span class="fu">c</span>(<span class="dv">12</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -560,8 +582,8 @@ Attaching package: 'reshape2'</code></pre>
 <p>Based on the histogram above, we know that the estimated plot yield for 10 individual sorghum plants is around 0 to 1000 grams where the highest possibility range is around 300 to 500 gram.<br>
 </p>
 </section>
-<section id="histogram-for-plant-height" class="level4">
-<h4 class="anchored" data-anchor-id="histogram-for-plant-height">1.7 histogram for plant height</h4>
+<section id="histogram-of-the-plant-height" class="level4">
+<h4 class="anchored" data-anchor-id="histogram-of-the-plant-height">1.7 Histogram of the plant height</h4>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>analysis_height<span class="ot">&lt;-</span><span class="fu">melt</span>(newdat[,<span class="fu">c</span>(<span class="dv">16</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -588,255 +610,236 @@ Attaching package: 'reshape2'</code></pre>
 </p>
 </section>
 </section>
-<section id="explore-the-effect-of-the-nitrogen-treatment-for-leaf-dimensionplant-heightyield." class="level3">
-<h3 class="anchored" data-anchor-id="explore-the-effect-of-the-nitrogen-treatment-for-leaf-dimensionplant-heightyield.">2.Explore the effect of the nitrogen treatment for leaf dimension/plant height/yield.</h3>
-<p>After exploring each variable of our dataset, the next thing we want to do is to explore the effect of the nitrogen treatment in different area like leaf dimension, plant height and yield. Hopefully, we can find some difference between different treatment.</p>
-<section id="plant-height" class="level4">
-<h4 class="anchored" data-anchor-id="plant-height">2.1 plant height</h4>
+<section id="visulize-the-potential-spatial-effect-of-the-field" class="level3">
+<h3 class="anchored" data-anchor-id="visulize-the-potential-spatial-effect-of-the-field">2. Visulize the potential spatial effect of the field</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>effect_height<span class="ot">&lt;-</span>newdat[,<span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">16</span>)]</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="do">###clean navalue</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>clean_eff_height<span class="ot">&lt;-</span> effect_height<span class="sc">%&gt;%</span></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="do">###cleaning na value</span></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(PlantHeight)</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clean_eff_height, <span class="fu">aes</span>(<span class="at">x=</span>Treatment, <span class="at">y=</span>PlantHeight))<span class="sc">+</span></span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Plant height by nitrogen level"</span>,</span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">'Average plant height(Unit: cm)'</span>,</span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span><span class="st">'Treatment variables'</span></span>
-<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>dat_testsp <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(dat)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">7</span>)) {</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  dat_testsp[,i]<span class="ot">=</span><span class="fu">factor</span>(dat_testsp[,i])</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="co">#dat_testsp[1:5,]</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat_testsp, <span class="fu">aes</span>(<span class="at">x=</span>Row, <span class="at">y=</span>Column, <span class="at">color=</span>EstimatedPlotYield))<span class="sc">+</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_gradient2</span>(</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">low =</span> <span class="st">"blue"</span>,</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">mid =</span> <span class="st">"white"</span>,</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">high =</span> <span class="st">"red"</span>,</span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">midpoint =</span> <span class="dv">900</span>,</span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">space =</span> <span class="st">"Lab"</span>,</span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">na.value =</span> <span class="st">"grey50"</span>,</span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">guide =</span> <span class="st">"colourbar"</span>,</span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">aesthetics =</span> <span class="st">"colour"</span>)<span class="sc">+</span></span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">20</span>,<span class="dv">40</span>,<span class="dv">60</span>))<span class="sc">+</span></span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">15</span>,<span class="dv">20</span>,<span class="dv">25</span>,<span class="dv">30</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+</div>
 <div class="cell-output-display">
 <p><img src="Analysis_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clean_eff_height, <span class="fu">aes</span>(<span class="at">x=</span>PlantHeight, <span class="at">fill=</span>Treatment))<span class="sc">+</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Plant height by nitrogen level"</span>,</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span><span class="st">'Average plant height(Unit: cm)'</span>,</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">'Number of lands'</span></span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>After checking the distributions of the data, we continued to assess the quality of the data before we perform statistical analysis on the traits and the treatment.</p>
+<p>Yield is the trait that plant breeders primarily focus on. From plant physiology and evolution point of view, it is also the trait that represents the overall condition of the plant. Therefore, we investigated whether there was potential spatial effect in the field. From the scatterplot we can see that the first few columns are grey, which indicates that the data was missing. Looking at the rest of the plot, we find that most yield values fell between 500 and 1000 grams, with a few outliers at the last few rows of block 7, which had higher yield of near 1500. This corresponds to the high nitrogen treatment for the block 7 but also it could be further tested statistically whether the yield was larger at the last few rows.<br>
+</p>
+</section>
+<section id="explore-the-effect-of-the-nitrogen-treatment-for-leaf-dimensionplant-heightyield." class="level3">
+<h3 class="anchored" data-anchor-id="explore-the-effect-of-the-nitrogen-treatment-for-leaf-dimensionplant-heightyield.">3.Explore the effect of the nitrogen treatment for leaf dimension/plant height/yield.</h3>
+<p>After exploring each variable of our dataset, the next thing we want to do is to explore the effect of the nitrogen treatment in different area like leaf dimension, plant height and yield. Hopefully, we can find some difference between different treatment.</p>
+<section id="plant-height" class="level4">
+<h4 class="anchored" data-anchor-id="plant-height">3.1 Plant height</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>effect_height<span class="ot">&lt;-</span>newdat[,<span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">16</span>)]</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="do">###clean navalue</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>clean_eff_height<span class="ot">&lt;-</span> effect_height<span class="sc">%&gt;%</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="do">###cleaning na value</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(PlantHeight)</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clean_eff_height, <span class="fu">aes</span>(<span class="at">x=</span>Treatment, <span class="at">y=</span>PlantHeight))<span class="sc">+</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Plant height by nitrogen level"</span>,</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y=</span><span class="st">'Average plant height(Unit: cm)'</span>,</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span><span class="st">'Treatment variables'</span></span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Analysis_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clean_eff_height, <span class="fu">aes</span>(<span class="at">x=</span>PlantHeight, <span class="at">fill=</span>Treatment))<span class="sc">+</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Plant height by nitrogen level"</span>,</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span><span class="st">'Average plant height(Unit: cm)'</span>,</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">'Number of lands'</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="Analysis_files/figure-html/unnamed-chunk-12-2.png" class="img-fluid" width="672"></p>
+<p><img src="Analysis_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Based on the boxplot above, the mean value and distribution for different treatment are all the same. Thus,we can say that there is no significant difference effect of the treatment. The histogram also support this result.<br>
 </p>
 </section>
 <section id="yield" class="level4">
-<h4 class="anchored" data-anchor-id="yield">2.2 yield</h4>
+<h4 class="anchored" data-anchor-id="yield">3.2 Yield</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>effect_yield<span class="ot">&lt;-</span>newdat[,<span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">12</span>)]</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="do">###clean navalue</span></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>clean_eff_yield<span class="ot">&lt;-</span> effect_yield<span class="sc">%&gt;%</span></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="do">###cleaning na value</span></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(EstimatedPlotYield)</span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clean_eff_yield, <span class="fu">aes</span>(<span class="at">x=</span>Treatment, <span class="at">y=</span>EstimatedPlotYield))<span class="sc">+</span></span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Yield by treatment"</span>,</span>
-<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span><span class="st">'Treatment variable'</span>,</span>
-<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">'Estimated yield(Unit: gram)'</span></span>
-<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>effect_yield<span class="ot">&lt;-</span>newdat[,<span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">12</span>)]</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="do">###clean navalue</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>clean_eff_yield<span class="ot">&lt;-</span> effect_yield<span class="sc">%&gt;%</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="do">###cleaning na value</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(EstimatedPlotYield)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(clean_eff_yield, <span class="fu">aes</span>(<span class="at">x=</span>Treatment, <span class="at">y=</span>EstimatedPlotYield))<span class="sc">+</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Yield by treatment"</span>,</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span><span class="st">'Treatment variable'</span>,</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">'Estimated yield(Unit: gram)'</span></span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Analysis_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+<p><img src="Analysis_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Based on the boxplot above, we can see that the mean estimated yield for sufficient nitrogen level is higher than the yield for low nitrogen level which is a interesting finding. Also, we noticed that there exists some outlier points with sufficient nitrogen treatment level. The yield for these points are more than twice larger than the upper quantile yield for the low nitrogen treatment.<br>
 </p>
 </section>
 <section id="leaf-length" class="level4">
-<h4 class="anchored" data-anchor-id="leaf-length">2.3 leaf length</h4>
+<h4 class="anchored" data-anchor-id="leaf-length">3.3 Leaf length</h4>
 <p>Then we separate the leaf’s length data and width data and plot the boxplot for different leaf by different nitrogen level to see if there exist some difference between them.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="do">###select required row</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>leaf_length<span class="ot">&lt;-</span> newdat[,<span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">13</span>,<span class="dv">17</span>)]</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>leaf_length <span class="sc">%&gt;%</span> </span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>( <span class="co"># here we rename the columns so things look nice in the graph later</span></span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Flag =</span> FlagLeafLength,</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Third =</span> ThirdLeafLength</span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>( <span class="co"># then we collapse the columns for each side of the brain into a single column, with a second column holding size values</span></span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"Flag"</span>, <span class="st">"Third"</span>),</span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Side"</span>,</span>
-<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Size"</span></span>
-<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>  <span class="do">###clean na value</span></span>
-<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(Size)<span class="sc">%&gt;%</span> <span class="co"># then we plot and give it a title</span></span>
-<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
-<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> Side,</span>
-<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> Size,</span>
-<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> Treatment</span>
-<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
-<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb40-23"><a href="#cb40-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb40-24"><a href="#cb40-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Box plot for flag and third leaf length by nitrogen level"</span>,</span>
-<span id="cb40-25"><a href="#cb40-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span><span class="st">'Leaf type'</span>,</span>
-<span id="cb40-26"><a href="#cb40-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">'Leaf dimension(Unit: cm)'</span></span>
-<span id="cb40-27"><a href="#cb40-27" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="do">###select required row</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>leaf_length<span class="ot">&lt;-</span> newdat[,<span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">13</span>,<span class="dv">17</span>)]</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>leaf_length <span class="sc">%&gt;%</span> </span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>( <span class="co"># here we rename the columns so things look nice in the graph later</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Flag =</span> FlagLeafLength,</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Third =</span> ThirdLeafLength</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>( <span class="co"># then we collapse the columns for each side of the brain into a single column, with a second column holding size values</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"Flag"</span>, <span class="st">"Third"</span>),</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Side"</span>,</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Size"</span></span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>  <span class="do">###clean na value</span></span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(Size)<span class="sc">%&gt;%</span> <span class="co"># then we plot and give it a title</span></span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> Side,</span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> Size,</span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> Treatment</span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb42-23"><a href="#cb42-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb42-24"><a href="#cb42-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Box plot for flag and third leaf length by nitrogen level"</span>,</span>
+<span id="cb42-25"><a href="#cb42-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span><span class="st">'Leaf type'</span>,</span>
+<span id="cb42-26"><a href="#cb42-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">'Leaf dimension(Unit: cm)'</span></span>
+<span id="cb42-27"><a href="#cb42-27" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Analysis_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+<p><img src="Analysis_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Based on the box plot above, we can only say the sufficient nitrogen may have a little influence on leaf length but overall there is no difference for leaf’s dimension in difference treatment since there is a large proportion of overlapping for leaf length and width between two treatment.<br>
 </p>
 </section>
 <section id="leaf-width" class="level4">
-<h4 class="anchored" data-anchor-id="leaf-width">2.4 leaf width</h4>
+<h4 class="anchored" data-anchor-id="leaf-width">3.4 Leaf width</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="do">###select required row</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>leaf_width<span class="ot">&lt;-</span> newdat[,<span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">14</span>,<span class="dv">18</span>)]</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>leaf_width <span class="sc">%&gt;%</span> </span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>( <span class="co"># here we rename the columns so things look nice in the graph later</span></span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Flag =</span> FlagLeafWidth,</span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Third =</span> ThirdLeafWidth</span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>( <span class="co"># then we collapse the columns for each side of the brain into a single column, with a second column holding size values</span></span>
-<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"Flag"</span>, <span class="st">"Third"</span>),</span>
-<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Side"</span>,</span>
-<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Size"</span></span>
-<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>  <span class="do">###clean na value</span></span>
-<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(Size)<span class="sc">%&gt;%</span> <span class="co"># then we plot and give it a title</span></span>
-<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
-<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> Side,</span>
-<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> Size,</span>
-<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> Treatment</span>
-<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
-<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a> <span class="at">title =</span> <span class="st">"Box plot for flag and third leaf width by nitrogen level"</span>,</span>
-<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span><span class="st">'Leaf type'</span>,</span>
-<span id="cb41-26"><a href="#cb41-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">'Leaf dimension(Unit: cm)'</span></span>
-<span id="cb41-27"><a href="#cb41-27" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="do">###select required row</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>leaf_width<span class="ot">&lt;-</span> newdat[,<span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">14</span>,<span class="dv">18</span>)]</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>leaf_width <span class="sc">%&gt;%</span> </span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>( <span class="co"># here we rename the columns so things look nice in the graph later</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Flag =</span> FlagLeafWidth,</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Third =</span> ThirdLeafWidth</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>( <span class="co"># then we collapse the columns for each side of the brain into a single column, with a second column holding size values</span></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"Flag"</span>, <span class="st">"Third"</span>),</span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Side"</span>,</span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Size"</span></span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>  <span class="do">###clean na value</span></span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(Size)<span class="sc">%&gt;%</span> <span class="co"># then we plot and give it a title</span></span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> Side,</span>
+<span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> Size,</span>
+<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> Treatment</span>
+<span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb43-22"><a href="#cb43-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a> <span class="at">title =</span> <span class="st">"Box plot for flag and third leaf width by nitrogen level"</span>,</span>
+<span id="cb43-25"><a href="#cb43-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span><span class="st">'Leaf type'</span>,</span>
+<span id="cb43-26"><a href="#cb43-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">'Leaf dimension(Unit: cm)'</span></span>
+<span id="cb43-27"><a href="#cb43-27" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Analysis_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+<p><img src="Analysis_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Based on the boxplot above, same as the previous analysis, we can only say the sufficient nitrogen level has no influence on flag leaf width and it may has a little negative influence on third leafwidth but overall there is no influence since there is a large overlapping between the dimension in two treatments.<br>
 </p>
 </section>
 </section>
-<section id="we-can-visualize-the-potential-spatial-effect-on-plant-growth-indicated-by-plant-height-or-flowering-time-by-plotting-the-field-row-and-column-layout-and-color-coding-with-the-phenotypes." class="level3">
-<h3 class="anchored" data-anchor-id="we-can-visualize-the-potential-spatial-effect-on-plant-growth-indicated-by-plant-height-or-flowering-time-by-plotting-the-field-row-and-column-layout-and-color-coding-with-the-phenotypes.">3. We can visualize the potential spatial effect on plant growth, indicated by plant height or flowering time, by plotting the field row and column layout and color-coding with the phenotypes.</h3>
+<section id="investigating-the-relationship-between-plant-phenotypes-and-the-yield-in-two-treatment." class="level3">
+<h3 class="anchored" data-anchor-id="investigating-the-relationship-between-plant-phenotypes-and-the-yield-in-two-treatment.">4. Investigating the relationship between plant phenotypes and the yield in two treatment.</h3>
+<p>It is important for plant breeders to make good selection decisions as early as possible. Thus, we sought to discover the relationship between other traits and the yield in order to build models to predict the yield before plants’ maturity.</p>
+<p>We developed a shiny app to check the relationship between the yield and other traits. Users can choose the trait. A scatterplot will be plotted for the yield and the chosen trait, with color marking the treatment groups and trend line showing the correlations.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>dat_testsp <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(dat)</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">7</span>)) {</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  dat_testsp[,i]<span class="ot">=</span><span class="fu">factor</span>(dat_testsp[,i])</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="co">#dat_testsp[1:5,]</span></span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat_testsp, <span class="fu">aes</span>(<span class="at">x=</span>Row, <span class="at">y=</span>Column, <span class="at">color=</span>EstimatedPlotYield))<span class="sc">+</span></span>
-<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_gradient2</span>(</span>
-<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">low =</span> <span class="st">"blue"</span>,</span>
-<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">mid =</span> <span class="st">"white"</span>,</span>
-<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">high =</span> <span class="st">"red"</span>,</span>
-<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">midpoint =</span> <span class="dv">900</span>,</span>
-<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">space =</span> <span class="st">"Lab"</span>,</span>
-<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">na.value =</span> <span class="st">"grey50"</span>,</span>
-<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">guide =</span> <span class="st">"colourbar"</span>,</span>
-<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">aesthetics =</span> <span class="st">"colour"</span>)<span class="sc">+</span></span>
-<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">20</span>,<span class="dv">40</span>,<span class="dv">60</span>))<span class="sc">+</span></span>
-<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">15</span>,<span class="dv">20</span>,<span class="dv">25</span>,<span class="dv">30</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="Analysis_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-</section>
-<section id="we-can-investigate-the-relationship-between-plant-phenotypes-for-example-plotting-scatterplots-and-regression-lines-bewtween-each-two-agronomic-traits." class="level3">
-<h3 class="anchored" data-anchor-id="we-can-investigate-the-relationship-between-plant-phenotypes-for-example-plotting-scatterplots-and-regression-lines-bewtween-each-two-agronomic-traits.">4. We can investigate the relationship between plant phenotypes, for example plotting scatterplots and regression lines bewtween each two agronomic traits.</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>panel.cor <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, <span class="at">digits=</span><span class="dv">2</span>, <span class="at">prefix=</span><span class="st">""</span>, cex.cor){</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  usr <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="st">"usr"</span>); <span class="fu">on.exit</span>(<span class="fu">par</span>(usr))</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">par</span>(<span class="at">usr =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>))</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="fu">cor</span>(x, y, <span class="at">use =</span> <span class="st">"complete"</span>)</span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  txt <span class="ot">&lt;-</span> <span class="fu">format</span>(<span class="fu">c</span>(r, <span class="fl">0.123456789</span>), <span class="at">digits=</span>digits)[<span class="dv">1</span>]</span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  txt <span class="ot">&lt;-</span> <span class="fu">paste</span>(prefix, txt, <span class="at">sep=</span><span class="st">""</span>)</span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">missing</span>(cex.cor)) cex <span class="ot">&lt;-</span> <span class="fl">0.8</span><span class="sc">/</span><span class="fu">strwidth</span>(txt)</span>
-<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">text</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>, txt, <span class="at">cex =</span> cex <span class="sc">*</span> <span class="fu">abs</span>(r))</span>
-<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>dat_num <span class="ot">&lt;-</span> dat[,<span class="fu">unlist</span>(<span class="fu">lapply</span>(dat, is.numeric))]  </span>
-<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>yield_traits <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"PaniclesPerPlot"</span>, <span class="st">"PanicleGrainWeight"</span>, <span class="st">"EstimatedPlotYield"</span>)</span>
-<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>dat_yield <span class="ot">&lt;-</span> dat[,yield_traits]</span>
-<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(dat_yield,  <span class="at">upper.panel=</span>panel.cor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in par(usr): argument 1 does not name a graphical parameter
-
-Warning in par(usr): argument 1 does not name a graphical parameter
-
-Warning in par(usr): argument 1 does not name a graphical parameter</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="Analysis_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(ggplot2)</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(dplyr)</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(ggpubr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(ggplot2)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(dplyr)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(ggpubr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: ggpubr</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpubr)</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define UI for application that draws a histogram</span></span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Application title</span></span>
-<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">"The relationship between phenotypes and final yield"</span>),</span>
-<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Sidebar with a slider input for the number of bins</span></span>
-<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sidebarPanel</span>(</span>
-<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">selectInput</span>(<span class="st">"phenotype"</span>,</span>
-<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Choose a phenotypic trait to investigate"</span>,</span>
-<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>                <span class="fu">list</span>(<span class="st">`</span><span class="at">Growth</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">list</span>(<span class="st">"DaysToBloom"</span>, <span class="st">"MedianLeafAngle"</span>, <span class="st">"FlagLeafLength"</span>, <span class="st">"FlagLeafWidth"</span>, </span>
-<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">"ExtantLeafNumber"</span>,<span class="st">"PlantHeight"</span>, <span class="st">"ThirdLeafLength"</span>, <span class="st">"ThirdLeafWidth"</span>),</span>
-<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>                     <span class="st">`</span><span class="at">Reproductive</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">list</span>(<span class="st">"PaniclesPerPlot"</span>, <span class="st">"PanicleGrainWeight"</span>))</span>
-<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Show a plot of the generated distribution</span></span>
-<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mainPanel</span>(</span>
-<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plotOutput</span>(<span class="st">"Scatterplot"</span>)</span>
-<span id="cb48-22"><a href="#cb48-22" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb48-23"><a href="#cb48-23" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-25"><a href="#cb48-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Define server logic required to draw a histogram</span></span>
-<span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output) {</span>
-<span id="cb48-27"><a href="#cb48-27" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>Scatterplot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
-<span id="cb48-28"><a href="#cb48-28" aria-hidden="true" tabindex="-1"></a>    dat_scatter <span class="ot">&lt;-</span> dat[,<span class="fu">c</span>(input<span class="sc">$</span>phenotype, <span class="st">"EstimatedPlotYield"</span>)]</span>
-<span id="cb48-29"><a href="#cb48-29" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb48-30"><a href="#cb48-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="at">data=</span>dat_scatter,<span class="fu">aes</span>(<span class="at">x =</span> Phenotype, <span class="at">y=</span>Yield)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb48-31"><a href="#cb48-31" aria-hidden="true" tabindex="-1"></a>      <span class="fu">stat_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)<span class="sc">+</span></span>
-<span id="cb48-32"><a href="#cb48-32" aria-hidden="true" tabindex="-1"></a>      <span class="fu">stat_regline_equation</span>(<span class="fu">aes</span>(<span class="at">label =</span>  <span class="fu">paste</span>(..rr.label.., <span class="at">sep =</span> <span class="st">"~~~~"</span>)))<span class="sc">+</span></span>
-<span id="cb48-33"><a href="#cb48-33" aria-hidden="true" tabindex="-1"></a>      <span class="fu">xlab</span>(input<span class="sc">$</span>phenotype)<span class="sc">+</span><span class="fu">ylab</span>(<span class="st">"Yield (g)"</span>)</span>
-<span id="cb48-34"><a href="#cb48-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(gg)</span>
-<span id="cb48-35"><a href="#cb48-35" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb48-36"><a href="#cb48-36" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb48-37"><a href="#cb48-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-38"><a href="#cb48-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Bind ui and server together</span></span>
-<span id="cb48-39"><a href="#cb48-39" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(ui, server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpubr)</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>dat<span class="ot">&lt;-</span><span class="fu">as.data.frame</span>(dat)</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define UI for application that draws a histogram</span></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Application title</span></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">titlePanel</span>(<span class="st">"The relationship between phenotypes and final yield"</span>),</span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Sidebar with a slider input for the number of bins</span></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sidebarPanel</span>(</span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">selectInput</span>(<span class="st">"phenotype"</span>,</span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Choose a phenotypic trait to investigate"</span>,</span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>                <span class="fu">list</span>(<span class="st">`</span><span class="at">Growth</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">list</span>(<span class="st">"DaysToBloom"</span>, <span class="st">"MedianLeafAngle"</span>, <span class="st">"FlagLeafLength"</span>, <span class="st">"FlagLeafWidth"</span>, </span>
+<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">"ExtantLeafNumber"</span>,<span class="st">"PlantHeight"</span>, <span class="st">"ThirdLeafLength"</span>, <span class="st">"ThirdLeafWidth"</span>),</span>
+<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a>                     <span class="st">`</span><span class="at">Reproductive</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">list</span>(<span class="st">"PaniclesPerPlot"</span>, <span class="st">"PanicleGrainWeight"</span>))</span>
+<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Show a plot of the generated distribution</span></span>
+<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mainPanel</span>(</span>
+<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plotOutput</span>(<span class="st">"Scatterplot"</span>)</span>
+<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-26"><a href="#cb46-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Define server logic required to draw a histogram</span></span>
+<span id="cb46-27"><a href="#cb46-27" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output) {</span>
+<span id="cb46-28"><a href="#cb46-28" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>Scatterplot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb46-29"><a href="#cb46-29" aria-hidden="true" tabindex="-1"></a>    <span class="co">#dat_scatter &lt;- dat[,c(input$phenotype, "EstimatedPlotYield")]</span></span>
+<span id="cb46-30"><a href="#cb46-30" aria-hidden="true" tabindex="-1"></a>    gg <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Yield=</span>dat<span class="sc">$</span>EstimatedPlotYield, <span class="at">Phenotype=</span>dat[,input<span class="sc">$</span>phenotype], <span class="at">Trt=</span>dat<span class="sc">$</span>Treatment) <span class="sc">%&gt;%</span></span>
+<span id="cb46-31"><a href="#cb46-31" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Phenotype, <span class="at">y=</span>Yield, <span class="at">group=</span>Trt, <span class="at">color=</span>Trt)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb46-32"><a href="#cb46-32" aria-hidden="true" tabindex="-1"></a>      <span class="fu">stat_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)<span class="sc">+</span></span>
+<span id="cb46-33"><a href="#cb46-33" aria-hidden="true" tabindex="-1"></a>      <span class="fu">stat_regline_equation</span>(<span class="fu">aes</span>(<span class="at">label =</span>  <span class="fu">paste</span>(..rr.label.., <span class="at">sep =</span> <span class="st">"~~~~"</span>)))<span class="sc">+</span></span>
+<span id="cb46-34"><a href="#cb46-34" aria-hidden="true" tabindex="-1"></a>      <span class="fu">xlab</span>(input<span class="sc">$</span>phenotype)<span class="sc">+</span><span class="fu">ylab</span>(<span class="st">"Yield (g)"</span>)</span>
+<span id="cb46-35"><a href="#cb46-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(gg)</span>
+<span id="cb46-36"><a href="#cb46-36" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb46-37"><a href="#cb46-37" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb46-38"><a href="#cb46-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-39"><a href="#cb46-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Bind ui and server together</span></span>
+<span id="cb46-40"><a href="#cb46-40" aria-hidden="true" tabindex="-1"></a><span class="fu">shinyApp</span>(ui, server)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><iframe data-deferred-src="app4468de75b2fc552ea4227a165cd6cd5f/?w=&amp;__subapp__=1" width="100%" height="400" class="shiny-frame shiny-frame-deferred"></iframe></p>
+<p><iframe data-deferred-src="appbed0d0351f8fc40de88a56d6d8690f9d/?w=&amp;__subapp__=1" width="100%" height="400" class="shiny-frame shiny-frame-deferred"></iframe></p>
 </div>
 </div>
+<p>It was reported in literature that in maize, which is a close relative of sorghum, plant height has large positive correlation with yield, but this pattern does not hold in sorghum. The largest correlation (0.72) was found between the grain weight and the yield but it is also measured at harvest so this information is not of high importance.</p>
 </section>
 </section>
 <section id="conclusion" class="level2">
@@ -845,13 +848,14 @@ Warning in par(usr): argument 1 does not name a graphical parameter</code></pre>
 <ol type="1">
 <li><p>The dimension of the third leaf is larger than the flag leaf</p></li>
 <li><p>There may exists positive relationship between flag leaf length and flag leaf width</p></li>
-<li><p>Usually it takes around 50 to 80 days for the sorghum flower bloom.The highest probability range is around 60 to 70 days.</p></li>
+<li><p>Usually it takes around 50 to 80 days for the sorghum flower to bloom.The highest probability range is around 60 to 70 days.</p></li>
 <li><p>The median value of leaf angle for each 10 individual sorghum plants is around 40 to 45 degree.</p></li>
 <li><p>The grain weight for panicle is around 30 to 50 grams.</p></li>
 <li><p>The estimated plot yield for 10 individual sorghum plants is around 0 to 1000 grams where the highest possibility range is around 300 to 600 gram.</p></li>
 <li><p>The range for plot height is around 30 to 300cm where usually the height will be around 70 cm./</p></li>
+<li><p>Sufficient nitrogen level has a positive influence in yield and may lead the occurrence of some extremely large yield plants.</p></li>
+<li><p>There is no sufficient evidence to shows strong relationship between plant height and the yield.</p></li>
 </ol>
-<p>Then when we explore the effect of the nitrogen treatment in different area, we find out that sufficient nitrogen level has a positive influence in yield and may lead the occurrence of some extremely large yield plants. However, there is no sufficient evidence to shows that it has any relationship between plant height and leaf dimension.</p>
 </section>
 
 </main>

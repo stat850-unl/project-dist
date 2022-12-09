@@ -17,32 +17,34 @@ dat<- read_xls("SAP2020_merged_v1.xls")
 dat[1:5,]
 ```
 
-The dataset is the agronomic traits that were measured in a sorghum field experiment with two levels of nitrogen treatment.\
+The dataset is the agronomic traits that were measured in a sorghum field experiment with around 400 varieties and two levels of nitrogen treatment. The field design was RCBD. Each treatment variety combination was replicated twice.\
 
-Each row represents a small pieces of land with it's unique row number and column number which contains around 10 individual sorghum plants. The explanation for each column stated below:
+Each plot was a one row plot representing a small pieces of land with its unique row number and column number which contains around 10 individual sorghum plants. The explanation for each column stated below:
 
-| Column name               | Description                                                                     |     Unit |
-|------------------|:-----------------------------------|-----------------:|
-| Plot ID&Sorghum Accession | Unique ID for each plants                                                       | Constant |
-| SNPDataID                 | Unique ID                                                                       |        / |
-| Row&Column                | spatial data for sorghum plants                                                 | Constant |
-| Block                     | Blocking number                                                                 | Constant |
-| Treatment                 | two levels of nitrogen treatment                                                |        / |
-| DaysToBloom               | How many days until the sorghum flower bloom(unit:day)                          |     days |
-| MedianLeafAngle           | Median value of leaf angle for each 10 individual sorghum plants(unit:degree)   |   degree |
-| LeafAngleSDV              | Standard deviation of leaf angle for 10 individual sorghum plants               | Constant |
-| PoorStand                 | If half of the sorghum plants are poor stand, if yes then the answer is Y       |      Y/N |
-| PaniclesPerPlot           | How many panicles per plot have                                                 | Constant |
-| PanicleGrainWeight        | How much grain weight for each panicle                                          |     Gram |
-| EstimatedPlotYield        | The estimated plot yield for 10 individual sorghum plants                       |     Gram |
-| FlagLeafLength            | The mean value of the flag leaf's length for each 10 individual sorghum plants  |       cm |
-| FlagLeafWidth             | The mean value of the flag leaf's width for each 10 individual sorghum plants   |       cm |
-| ExtantLeafNumber          | The number of visible leaves on the main stalk at maturity stage.               | Constant |
-| PlantHeight               | The mean value of the plant height for each 10 individual sorghum plants        |       cm |
-| ThirdLeafLength           | The mean value of the third leaf's length for each 10 individual sorghum plants |       cm |
-| ThirdLeafWidth            | The mean value of the third leaf's width for each 10 individual sorghum plants  |       cm |
+| Column name               | Description                                                                     | Data type          |     Unit |
+|-------------------|:-----------------------|----------------|--------:|
+| Plot ID&Sorghum Accession | Unique ID for each plants                                                       | Character          | Constant |
+| SNPDataID                 | Unique ID                                                                       | Numeric (factor)   |        / |
+| Row&Column                | Spatial location of sorghum plants                                              | Numeric            | Constant |
+| Block                     | Blocking number                                                                 | Numeric (factor)   | Constant |
+| Treatment                 | 2 levels of nitrogen treatment                                                  | Character (binary) |        / |
+| DaysToBloom               | How many days until the sorghum flower bloom(unit:day)                          | Numeric            |     days |
+| MedianLeafAngle           | Median value of leaf angle for each 10 individual sorghum plants(unit:degree)   | Numeric            |   degree |
+| LeafAngleSDV              | Standard deviation of leaf angle for 10 individual sorghum plants               | Numeric            | Constant |
+| PoorStand                 | If half of the sorghum plants are poor stand, if yes then the answer is Y       | Character (binary) |      Y/N |
+| PaniclesPerPlot           | How many panicles per plot have                                                 | Numeric            | Constant |
+| PanicleGrainWeight        | How much grain weight for each panicle                                          | Numeric            |     Gram |
+| EstimatedPlotYield        | The estimated plot yield for 10 individual sorghum plants                       | Numeric            |     Gram |
+| FlagLeafLength            | The mean value of the flag leaf's length for each 10 individual sorghum plants  | Numeric            |       cm |
+| FlagLeafWidth             | The mean value of the flag leaf's width for each 10 individual sorghum plants   | Numeric            |       cm |
+| ExtantLeafNumber          | The number of visible leaves on the main stalk at maturity stage.               | Numeric            | Constant |
+| PlantHeight               | The mean value of the plant height for each 10 individual sorghum plants        | Numeric            |       cm |
+| ThirdLeafLength           | The mean value of the third leaf's length for each 10 individual sorghum plants | Numeric            |       cm |
+| ThirdLeafWidth            | The mean value of the third leaf's width for each 10 individual sorghum plants  | Numeric            |       cm |
 
 ## Data cleaning
+
+The first three columns contain same information, so we only retain the second column, which is more widely used by other literature.
 
 ```{r}
 ##delete the useless column
@@ -60,9 +62,11 @@ summary(newdat)
 
 ## Data analysis
 
-### 1. check the distribution for numeric output column
+The analysis started from checking the distribution for each numeric traits. Then we discovered some correlations between the traits. Finally, we took the nitrogen treatments into consideration to investigate the treatment effect on the sorghum plants.
 
-#### 1.1 box plot for leaf dimension
+### 1. Check the distribution for numeric columns
+
+#### 1.1 Box plot for leaf dimensions
 
 ```{r}
 library(ggplot2)
@@ -95,9 +99,9 @@ ggplot(clean_le,aes(x=leaf, y=value))+
 
 ```
 
-The first thing we want to explore is if there exist some difference between the leaf dimension in flag leaf and third leaf. Thus, we got a boxplot for flag and third leaf.
+The first thing we want to explore is if there exists some difference between the leaf dimension in the flag (top) leaf and the third leaf. Thus, we got a boxplot for flag and third leaf.
 
-Based on the plot above, we can see that overall the dimension of the third leaf is larger than the flag leaf which is reasonable. Also, we noticed that the outliers for flag leafs are all occur in the top for both length and width, same for the third leaf which the outliers occur in the both side. Thus we thought if the leaf length has the relationship with leaf width.
+Based on the plot above, we can see that overall the dimension of the third leaf is larger than the flag leaf, which is reasonable. It can be seen that the outliers for flag leafs all occur in the top for both length and width. Same trend is observed for the third leaf which the outliers occur in the both side. Thus, it is worth investigating if the leaf length has any relationship with the leaf width.
 
 ```{r}
 ##clean NA value
@@ -132,9 +136,9 @@ Leaf_type <- c("Third leaf" = "#619CFF", "Flag leaf" = "#F8766D")
      scale_color_manual(values = Leaf_type)
 ```
 
-Based on the two scatter plot above, we can briefly check if there is relationship between leaf length and leaf width. For the flag leaf dimension plot, we can easily find a ellipse which shows there is positive relationship between flag leaf length and flag leaf width. For the third leaf dimension plot, the ellipse is hard to find and it more like a circle which means the relationship between third leaf length and width may not so large. Thus, further analysis needs to be done to draw a clear conclusion.
+Based on the two scatter plot above, we can briefly check if there is relationship between leaf length and leaf width. For the flag leaf dimension plot, we can easily find a ellipse which shows there is positive relationship between flag leaf length and flag leaf width. For the third leaf dimension plot, the ellipse is hard to find and the distribution of the data points is more like a circle shape, which means the relationship between third leaf length and width may be weak. Thus, further analysis needs to be done to draw a clear conclusion.
 
-#### 1.2 histogram for blooming day
+#### 1.2 Histogram for blooming day
 
 ```{r}
 ##create some histogram for each variable to have a basic understand for each variable
@@ -163,7 +167,7 @@ Then, we want to check the distribution for multiple variables to have a basic u
 
 Based on the histogram above, we know that usually it takes around 50 to 80 days for the sorghum flower bloom.The highest probability range is around 60 to 70 days.\
 
-#### 1.3 histogram for median leaf angle
+#### 1.3 Histogram for median leaf angle
 
 ```{r}
 
@@ -187,7 +191,7 @@ ggplot(clean_angle,aes(x=value))+
 
 Based on the histogram above, we know that usually the median value of leaf angle for each 10 individual sorghum plants is around 40 to 45 degree.\
 
-#### 1.4 histogram for panicle amount
+#### 1.4 Histogram for panicle amount
 
 ```{r}
 
@@ -211,7 +215,7 @@ ggplot(clean_panicle,aes(x=value))+
 
 Based on the histogram above, we know that usually the panicles per plot have is around 0 to 20 where the highest possibility is around 13.\
 
-#### 1.5 histogram for grain weight
+#### 1.5 Histogram for grain weight
 
 ```{r}
 
@@ -235,7 +239,7 @@ ggplot(clean_grain,aes(x=value))+
 
 Based on the histogram above, we know that usually the grain weight for each panicle is around 30 to 50 grams.\
 
-#### 1.6 histogram for yield
+#### 1.6 Histogram of the yield
 
 ```{r}
 
@@ -259,7 +263,7 @@ ggplot(clean_yield,aes(x=value))+
 
 Based on the histogram above, we know that the estimated plot yield for 10 individual sorghum plants is around 0 to 1000 grams where the highest possibility range is around 300 to 500 gram.\
 
-#### 1.7 histogram for plant height
+#### 1.7 Histogram of the plant height
 
 ```{r}
 
@@ -283,11 +287,41 @@ ggplot(clean_height,aes(x=value))+
 
 Based on the histogram above, we know range for plot height is around 30 to 300cm where usually the height will be around 70 cm.\
 
-### 2.Explore the effect of the nitrogen treatment for leaf dimension/plant height/yield.
+### 2. Visulize the potential spatial effect of the field
+
+```{r}
+dat_testsp <- as.data.frame(dat)
+for (i in c(1,2,3,6,7)) {
+  dat_testsp[,i]=factor(dat_testsp[,i])
+}
+
+#dat_testsp[1:5,]
+
+ggplot(data=dat_testsp, aes(x=Row, y=Column, color=EstimatedPlotYield))+
+  geom_point()+
+  scale_colour_gradient2(
+    low = "blue",
+    mid = "white",
+    high = "red",
+    midpoint = 900,
+    space = "Lab",
+    na.value = "grey50",
+    guide = "colourbar",
+    aesthetics = "colour")+
+  scale_x_continuous(breaks=c(0,20,40,60))+
+  scale_y_continuous(breaks=c(0,5,10,15,20,25,30))
+
+```
+
+After checking the distributions of the data, we continued to assess the quality of the data before we perform statistical analysis on the traits and the treatment.
+
+Yield is the trait that plant breeders primarily focus on. From plant physiology and evolution point of view, it is also the trait that represents the overall condition of the plant. Therefore, we investigated whether there was potential spatial effect in the field. From the scatterplot we can see that the first few columns are grey, which indicates that the data was missing. Looking at the rest of the plot, we find that most yield values fell between 500 and 1000 grams, with a few outliers at the last few rows of block 7, which had higher yield of near 1500. This corresponds to the high nitrogen treatment for the block 7 but also it could be further tested statistically whether the yield was larger at the last few rows.\
+
+### 3.Explore the effect of the nitrogen treatment for leaf dimension/plant height/yield.
 
 After exploring each variable of our dataset, the next thing we want to do is to explore the effect of the nitrogen treatment in different area like leaf dimension, plant height and yield. Hopefully, we can find some difference between different treatment.
 
-#### 2.1 plant height
+#### 3.1 Plant height
 
 ```{r}
 effect_height<-newdat[,c(5,16)]
@@ -314,7 +348,7 @@ ggplot(clean_eff_height, aes(x=PlantHeight, fill=Treatment))+
 
 Based on the boxplot above, the mean value and distribution for different treatment are all the same. Thus,we can say that there is no significant difference effect of the treatment. The histogram also support this result.\
 
-#### 2.2 yield
+#### 3.2 Yield
 
 ```{r}
 effect_yield<-newdat[,c(5,12)]
@@ -337,7 +371,7 @@ ggplot(clean_eff_yield, aes(x=Treatment, y=EstimatedPlotYield))+
 
 Based on the boxplot above, we can see that the mean estimated yield for sufficient nitrogen level is higher than the yield for low nitrogen level which is a interesting finding. Also, we noticed that there exists some outlier points with sufficient nitrogen treatment level. The yield for these points are more than twice larger than the upper quantile yield for the low nitrogen treatment.\
 
-#### 2.3 leaf length
+#### 3.3 Leaf length
 
 Then we separate the leaf's length data and width data and plot the boxplot for different leaf by different nitrogen level to see if there exist some difference between them.
 
@@ -374,7 +408,7 @@ leaf_length %>%
 
 Based on the box plot above, we can only say the sufficient nitrogen may have a little influence on leaf length but overall there is no difference for leaf's dimension in difference treatment since there is a large proportion of overlapping for leaf length and width between two treatment.\
 
-#### 2.4 leaf width
+#### 3.4 Leaf width
 
 ```{r}
 ###select required row
@@ -409,50 +443,12 @@ leaf_width %>%
 
 Based on the boxplot above, same as the previous analysis, we can only say the sufficient nitrogen level has no influence on flag leaf width and it may has a little negative influence on third leafwidth but overall there is no influence since there is a large overlapping between the dimension in two treatments.\
 
-### 3. We can visualize the potential spatial effect on plant growth, indicated by plant height or flowering time, by plotting the field row and column layout and color-coding with the phenotypes.
 
-```{r}
-dat_testsp <- as.data.frame(dat)
-for (i in c(1,2,3,6,7)) {
-  dat_testsp[,i]=factor(dat_testsp[,i])
-}
+### 4. Investigating the relationship between plant phenotypes and the yield in two treatment.
 
-#dat_testsp[1:5,]
+It is important for plant breeders to make good selection decisions as early as possible. Thus, we sought to discover the relationship between other traits and the yield in order to build models to predict the yield before plants' maturity. 
 
-ggplot(data=dat_testsp, aes(x=Row, y=Column, color=EstimatedPlotYield))+
-  geom_point()+
-  scale_colour_gradient2(
-    low = "blue",
-    mid = "white",
-    high = "red",
-    midpoint = 900,
-    space = "Lab",
-    na.value = "grey50",
-    guide = "colourbar",
-    aesthetics = "colour")+
-  scale_x_continuous(breaks=c(0,20,40,60))+
-  scale_y_continuous(breaks=c(0,5,10,15,20,25,30))
-
-```
-
-### 4. We can investigate the relationship between plant phenotypes, for example plotting scatterplots and regression lines bewtween each two agronomic traits.
-
-```{r}
-panel.cor <- function(x, y, digits=2, prefix="", cex.cor){
-  usr <- par("usr"); on.exit(par(usr))
-  par(usr = c(0, 1, 0, 1))
-  r <- cor(x, y, use = "complete")
-  txt <- format(c(r, 0.123456789), digits=digits)[1]
-  txt <- paste(prefix, txt, sep="")
-  if(missing(cex.cor)) cex <- 0.8/strwidth(txt)
-  text(0.5, 0.5, txt, cex = cex * abs(r))
-}
-
-dat_num <- dat[,unlist(lapply(dat, is.numeric))]  
-yield_traits <- c("PaniclesPerPlot", "PanicleGrainWeight", "EstimatedPlotYield")
-dat_yield <- dat[,yield_traits]
-pairs(dat_yield,  upper.panel=panel.cor)
-```
+We developed a shiny app to check the relationship between the yield and other traits. Users can choose the trait. A scatterplot will be plotted for the yield and the chosen trait, with color marking the treatment groups and trend line showing the correlations.
 
 ```{r}
 library(shiny)
@@ -488,8 +484,8 @@ ui <- fluidPage(
 server <- function(input, output) {
   output$Scatterplot <- renderPlot({
     #dat_scatter <- dat[,c(input$phenotype, "EstimatedPlotYield")]
-    gg <- data.frame(Yield=dat$EstimatedPlotYield, Phenotype=dat[,input$phenotype]) %>%
-      ggplot(aes(x = Phenotype, y=Yield)) + geom_point() +
+    gg <- data.frame(Yield=dat$EstimatedPlotYield, Phenotype=dat[,input$phenotype], Trt=dat$Treatment) %>%
+      ggplot(aes(x = Phenotype, y=Yield, group=Trt, color=Trt)) + geom_point() +
       stat_smooth(method = "lm")+
       stat_regline_equation(aes(label =  paste(..rr.label.., sep = "~~~~")))+
       xlab(input$phenotype)+ylab("Yield (g)")
@@ -501,6 +497,8 @@ server <- function(input, output) {
 shinyApp(ui, server)
 ```
 
+It was reported in literature that in maize, which is a close relative of sorghum, plant height has large positive correlation with yield, but this pattern does not hold in sorghum. The largest correlation (0.72) was found between the grain weight and the yield but it is also measured at harvest so this information is not of high importance.
+
 ## Conclusion
 
 In conclusion, when we explore each variable, we noticed that:
@@ -509,7 +507,7 @@ In conclusion, when we explore each variable, we noticed that:
 
 2.  There may exists positive relationship between flag leaf length and flag leaf width
 
-3.  Usually it takes around 50 to 80 days for the sorghum flower bloom.The highest probability range is around 60 to 70 days.
+3.  Usually it takes around 50 to 80 days for the sorghum flower to bloom.The highest probability range is around 60 to 70 days.
 
 4.  The median value of leaf angle for each 10 individual sorghum plants is around 40 to 45 degree.
 
@@ -519,4 +517,6 @@ In conclusion, when we explore each variable, we noticed that:
 
 7.  The range for plot height is around 30 to 300cm where usually the height will be around 70 cm./
 
-Then when we explore the effect of the nitrogen treatment in different area, we find out that sufficient nitrogen level has a positive influence in yield and may lead the occurrence of some extremely large yield plants. However, there is no sufficient evidence to shows that it has any relationship between plant height and leaf dimension.
+8. Sufficient nitrogen level has a positive influence in yield and may lead the occurrence of some extremely large yield plants. 
+
+9. There is no sufficient evidence to shows strong relationship between plant height and the yield.
